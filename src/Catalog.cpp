@@ -4,11 +4,13 @@
 
 CatalogItem::~CatalogItem()
 {
-    for (auto item: _children) delete item;
+    qDeleteAll(_children);
 }
 
-bool CatalogItem::isFolder() const { return dynamic_cast<FolderItem*>(this); }
-bool CatalogItem::isGlass() const { return dynamic_cast<GlassItem*>(this); }
+bool CatalogItem::isFolder() const { return dynamic_cast<const FolderItem*>(this); }
+bool CatalogItem::isGlass() const { return dynamic_cast<const GlassItem*>(this); }
+FolderItem* CatalogItem::asFolder() { return dynamic_cast<FolderItem*>(this); }
+GlassItem* CatalogItem::asGlass() { return dynamic_cast<GlassItem*>(this); }
 
 
 Catalog::Catalog(QObject* parent) : QObject(parent)
@@ -24,6 +26,7 @@ Catalog::Catalog(QObject* parent) : QObject(parent)
             auto subitem = new GlassItem;
             subitem->_id = j*i;
             subitem->_title = QString("Subitem %1").arg(j*i);
+            subitem->_parent = item;
             item->_children.append(subitem);
         }
 
@@ -34,11 +37,37 @@ Catalog::Catalog(QObject* parent) : QObject(parent)
 
 QString GlassItem::getInfo() const
 {
+    // TODO make glass description
     return "Lorem ipsum";
 }
 
 
 Catalog::~Catalog()
 {
-    for (auto item: _items) delete item;
+    qDeleteAll(_items);
+}
+
+QString Catalog::renameFolder(FolderItem* item, const QString& title)
+{
+    item->_title = title;
+    // TODO save to database, return error
+    return QString();
+}
+
+QString Catalog::createFolder(FolderItem* parent, const QString& title)
+{
+    FolderItem* folder = new FolderItem;
+    folder->_title = title;
+    folder->_parent = parent;
+    (parent ? parent->_children : _items).append(folder);
+    // TODO save to database, return error
+    return QString();
+}
+
+QString Catalog::removeFolder(FolderItem* item)
+{
+    (item->parent() ? item->parent()->_children : _items).removeOne(item);
+    delete item;
+    // TODO remove from database, return error
+    return QString();
 }

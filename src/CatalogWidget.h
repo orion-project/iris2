@@ -4,6 +4,7 @@
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
+class QAction;
 class QMenu;
 class QTreeView;
 QT_END_NAMESPACE
@@ -11,6 +12,8 @@ QT_END_NAMESPACE
 class Catalog;
 class CatalogItem;
 class CatalogModel;
+class FolderItem;
+class GlassItem;
 
 class CatalogWidget : public QWidget
 {
@@ -21,15 +24,24 @@ public:
 
     void setCatalog(Catalog* catalog);
 
-protected:
-    void contextMenuEvent(QContextMenuEvent *event) override;
-
 private:
-    //void populateBranch(QTreeWidgetItem* rootView, CatalogItem* rootItem);
-
+    Catalog* _catalog;
     QTreeView* _catalogView;
     CatalogModel* _catalogModel = nullptr;
     QMenu *_folderMenu, *_glassMenu;
+    QAction *_folderMenuHeader, *_glassMenuHeader;
+
+    static QAction *makeHeaderItem(QMenu* menu);
+
+    void contextMenuRequested(const QPoint &pos);
+
+    void createFolder();
+    void renameFolder();
+    void deleteFolder();
+
+    CatalogItem* selectedItem() const;
+    FolderItem* selectedFolder() const;
+    GlassItem* selectedGlass() const;
 };
 
 #endif // CATALOGWIDGET_H

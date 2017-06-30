@@ -40,4 +40,5 @@ HEADERS  += src/MainWindow.h \
     src/InfoWidget.h \
     src/Glass.h \
     src/Catalog.h \
-    src/GlassEditor.h
+    src/GlassEditor.h \
+    src/CatalogModel.h

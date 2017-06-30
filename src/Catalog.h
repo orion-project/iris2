@@ -6,6 +6,9 @@
 #include <QObject>
 #include <QList>
 
+class FolderItem;
+class GlassItem;
+
 class CatalogItem
 {
 public:
@@ -13,16 +16,18 @@ public:
 
     int id() const { return _id; }
     const QString& title() const { return _title; }
-
+    CatalogItem* parent() const { return _parent; }
     const QList<CatalogItem*>& children() const { return _children; }
 
     bool isFolder() const;
     bool isGlass() const;
+    FolderItem* asFolder();
+    GlassItem* asGlass();
 
 private:
     int _id;
     QString _title;
-
+    CatalogItem* _parent = nullptr;
     QList<CatalogItem*> _children;
 
     friend class Catalog;
@@ -50,6 +55,10 @@ public:
     ~Catalog();
 
     const QList<CatalogItem*>& items() const { return _items; }
+
+    QString renameFolder(FolderItem* item, const QString& title);
+    QString createFolder(FolderItem* parent, const QString& title);
+    QString removeFolder(FolderItem* item);
 
 private:
     QList<CatalogItem*> _items;

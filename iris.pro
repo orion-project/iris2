@@ -30,8 +30,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += src/main.cpp\
         src/MainWindow.cpp \
     src/CatalogWidget.cpp \
-    src/InfoWidget.cpp
+    src/InfoWidget.cpp \
+    src/Glass.cpp \
+    src/Catalog.cpp \
+    src/GlassEditor.cpp
 
 HEADERS  += src/MainWindow.h \
     src/CatalogWidget.h \
-    src/InfoWidget.h
+    src/InfoWidget.h \
+    src/Glass.h \
+    src/Catalog.h \
+    src/GlassEditor.h

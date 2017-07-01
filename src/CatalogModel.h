@@ -2,14 +2,18 @@
 #define CATALOGMODEL_H
 
 #include <QAbstractItemModel>
-#include <QDebug>
+#include <QIcon>
 
 #include "Catalog.h"
 
 class CatalogModel : public QAbstractItemModel
 {
 public:
-    CatalogModel(Catalog* catalog) : _catalog(catalog) {}
+    CatalogModel(Catalog* catalog) : _catalog(catalog)
+    {
+        _iconGlass = QIcon(":/icon/glass");
+        _iconFolder = QIcon(":/icon/folder_closed");
+    }
 
     static CatalogItem* catalogItem(const QModelIndex &index)
     {
@@ -67,7 +71,13 @@ public:
         }
         if (role == Qt::DecorationRole)
         {
-            // TODO make icon
+            auto item = catalogItem(index);
+            if (!item) return QVariant();
+            // TODO different icons for opened and closed folder
+            if (item->isFolder())
+                return _iconFolder;
+            // TODO different icons or types of glass
+            return _iconGlass;
         }
         return QVariant();
     }
@@ -80,7 +90,6 @@ public:
     QModelIndex itemAdded(const QModelIndex &parent)
     {
         int row = rowCount(parent) - 1;
-        qDebug() << row;
         beginInsertRows(parent, row, row);
         endInsertRows();
         return index(row, 0, parent);
@@ -96,6 +105,7 @@ public:
 
 private:
     Catalog* _catalog;
+    QIcon _iconFolder, _iconGlass;
 };
 
 #endif // CATALOGMODEL_H

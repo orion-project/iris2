@@ -59,6 +59,9 @@ public:
     QString renameFolder(FolderItem* item, const QString& title);
     QString createFolder(FolderItem* parent, const QString& title);
     QString removeFolder(FolderItem* item);
+    QString createGlass(FolderItem* parent, const QString& title);
+    QString updateGlass(GlassItem* item, const QString &title);
+    QString removeGlass(GlassItem* item);
 
 private:
     QList<CatalogItem*> _items;

@@ -38,6 +38,9 @@ private:
     void createFolder();
     void renameFolder();
     void deleteFolder();
+    void createGlass();
+    void editGlass();
+    void deleteGlass();
 
     CatalogItem* selectedItem() const;
     FolderItem* selectedFolder() const;

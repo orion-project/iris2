@@ -50,6 +50,7 @@ Catalog::~Catalog()
 QString Catalog::renameFolder(FolderItem* item, const QString& title)
 {
     item->_title = title;
+    // TODO sort items after renaming
     // TODO save to database, return error
     return QString();
 }
@@ -60,11 +61,39 @@ QString Catalog::createFolder(FolderItem* parent, const QString& title)
     folder->_title = title;
     folder->_parent = parent;
     (parent ? parent->_children : _items).append(folder);
+    // TODO sort items after inserting
     // TODO save to database, return error
     return QString();
 }
 
 QString Catalog::removeFolder(FolderItem* item)
+{
+    (item->parent() ? item->parent()->_children : _items).removeOne(item);
+    delete item;
+    // TODO remove from database, return error
+    return QString();
+}
+
+QString Catalog::createGlass(FolderItem* parent, const QString& title)
+{
+    GlassItem* glass = new GlassItem;
+    glass->_title = title;
+    glass->_parent = parent;
+    (parent ? parent->_children : _items).append(glass);
+    // TODO sort items after inserting
+    // TODO save to database, return error
+    return QString();
+}
+
+QString Catalog::updateGlass(GlassItem* item, const QString& title)
+{
+    item->_title = title;
+    // TODO sort items after renaming
+    // TODO save to database, return error
+    return QString("err");
+}
+
+QString Catalog::removeGlass(GlassItem* item)
 {
     (item->parent() ? item->parent()->_children : _items).removeOne(item);
     delete item;

@@ -2,6 +2,7 @@
 #define CATALOGMODEL_H
 
 #include <QAbstractItemModel>
+#include <QDebug>
 
 #include "Catalog.h"
 
@@ -79,6 +80,7 @@ public:
     QModelIndex itemAdded(const QModelIndex &parent)
     {
         int row = rowCount(parent) - 1;
+        qDebug() << row;
         beginInsertRows(parent, row, row);
         endInsertRows();
         return index(row, 0, parent);

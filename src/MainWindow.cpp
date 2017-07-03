@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "Catalog.h"
 #include "CatalogWidget.h"
 #include "InfoWidget.h"
 #include "helpers/OriWindows.h"
@@ -8,9 +9,11 @@
 
 MainWindow::MainWindow() : QMainWindow()
 {
-    Ori::Wnd::setWindowIcon(this, ":/windows/main"); // TODO make icon
+    Ori::Wnd::setWindowIcon(this, ":/icon/main");
 
+    _catalog = new Catalog(this);
     _catalogView = new CatalogWidget;
+    _catalogView->setCatalog(_catalog);
     _infoView = new InfoWidget;
 
     createDocks();

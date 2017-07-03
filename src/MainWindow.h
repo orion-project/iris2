@@ -7,6 +7,7 @@ QT_BEGIN_NAMESPACE
 class QMdiArea;
 QT_END_NAMESPACE
 
+class Catalog;
 class CatalogWidget;
 class InfoWidget;
 
@@ -19,6 +20,7 @@ public:
     ~MainWindow();
 
 private:
+    Catalog* _catalog;
     CatalogWidget* _catalogView;
     InfoWidget* _infoView;
     QMdiArea* _mdiArea;

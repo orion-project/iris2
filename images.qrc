@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file alias="main">./img/icon/main.svg</file>
+        <file alias="glass_blue">./img/icon/glass_blue.svg</file>
+        <file alias="glass_green">./img/icon/glass_green.svg</file>
+        <file alias="glass_violet">./img/icon/glass_violet.svg</file>
+        <file alias="glass_red">./img/icon/glass_red.svg</file>
+        <file alias="folder_opend">./img/icon/folder_opened.svg</file>
+        <file alias="folder_closed">./img/icon/folder_closed.svg</file>
+    </qresource>
+</RCC>
+
+
+

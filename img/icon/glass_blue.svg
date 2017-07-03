@@ -1,0 +1,29 @@
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<linearGradient id="linearGradient3976" y2="577.47" gradientUnits="userSpaceOnUse" x2="58.591" gradientTransform="matrix(0.994,0,0,0.994,1.536,4.7781326)" y1="1009.8" x1="470.2">
+<stop stop-color="#0081d7" offset="0"/>
+<stop stop-color="#8ccfff" offset="1"/>
+</linearGradient>
+<linearGradient id="linearGradient3978" y2="36.916" gradientUnits="userSpaceOnUse" x2="32.202" gradientTransform="matrix(1.0478916,0,0,1.0639144,-11.212349,526.73582)" y1="447.71" x1="430.21">
+<stop stop-color="#09F" stop-opacity="0.79057592" offset="0"/>
+<stop stop-color="#FFF" stop-opacity="0.77486908" offset="1"/>
+</linearGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(0,-540.36218)">
+<path stroke-linejoin="round" d="m79.694,547.86,352.61,0,72.194,72.194,0,352.61-72.194,72.194-352.61,0l-72.19-72.23v-352.61z" stroke="url(#linearGradient3976)" stroke-linecap="round" stroke-miterlimit="4" stroke-dasharray="none" stroke-width="15" fill="url(#linearGradient3978)"/>
+<path d="M425.71,19.143,326.43,97v296.43l98.571,100,66.43-66.43,0.71-342.14z" fill-opacity="0.25570774" transform="translate(0,540.36218)" fill="#FFF"/>
+<path d="m20,628.08,305.71,9.2857,168.57-8.5714-66.429-66.429-342.14-0.71429z" fill-opacity="0.25570774" fill="#FFF"/>
+<path d="m18.571,966.65,308.57-31.429,165.71,30.714-66.429,66.429-342.14,0.7143z" fill-opacity="0.25570774" fill="#FFF"/>
+<path d="M86.857,559.51,87.571,1033.8,21.143,967.36,20.429,625.22z" fill-opacity="0.25570774" fill="#FFF"/>
+</g>
+</svg>

@@ -4,12 +4,18 @@
 #include <QDialog>
 
 QT_BEGIN_NAMESPACE
+class QComboBox;
 class QLineEdit;
 QT_END_NAMESPACE
 
 class Catalog;
 class GlassItem;
 class FolderItem;
+
+namespace Ori {
+namespace Widgets {
+class ValueEdit;
+}}
 
 class GlassEditor : public QDialog
 {
@@ -24,17 +30,23 @@ private:
 
     explicit GlassEditor(DialogMode mode, Catalog* catalog);
 
-    QLineEdit* _nameEditor;
+    QLineEdit *_titleEditor;
+    QComboBox *_formulaSelector;
+    Ori::Widgets::ValueEdit *_lambdaMinEditor, *_lambdaMaxEditor;
 
     DialogMode _mode;
-    Catalog* _catalog;
-    GlassItem* _glassItem = nullptr;
-    FolderItem* _parentFolder;
+    Catalog *_catalog;
+    GlassItem *_glassItem = nullptr;
+    FolderItem *_parentFolder;
 
+    bool populate(GlassItem* item);
     void apply();
     QString save();
 
-    QString glassTitle();
+    QString glassTitle() const;
+    double lambdaMin() const;
+    double lambdaMax() const;
 };
 
 #endif // GLASSEDITOR_H
+

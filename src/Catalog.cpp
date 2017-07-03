@@ -1,4 +1,5 @@
 #include "Catalog.h"
+#include "Glass.h"
 
 #include <QDebug>
 
@@ -12,6 +13,14 @@ bool CatalogItem::isGlass() const { return dynamic_cast<const GlassItem*>(this);
 FolderItem* CatalogItem::asFolder() { return dynamic_cast<FolderItem*>(this); }
 GlassItem* CatalogItem::asGlass() { return dynamic_cast<GlassItem*>(this); }
 
+//------------------------------------------------------------------------------
+
+GlassItem::~GlassItem()
+{
+    if (_glass) delete _glass;
+}
+
+//------------------------------------------------------------------------------
 
 Catalog::Catalog(QObject* parent) : QObject(parent)
 {
@@ -33,14 +42,6 @@ Catalog::Catalog(QObject* parent) : QObject(parent)
         _items.append(item);
     }
 }
-
-
-QString GlassItem::getInfo() const
-{
-    // TODO make glass description
-    return "Lorem ipsum";
-}
-
 
 Catalog::~Catalog()
 {
@@ -74,21 +75,31 @@ QString Catalog::removeFolder(FolderItem* item)
     return QString();
 }
 
-QString Catalog::createGlass(FolderItem* parent, GlassItem *item)
+QString Catalog::createGlass(FolderItem* parent, Glass *glass)
 {
-    // TODO make glass id
+    // TODO make item id
+    auto item = new GlassItem;
+    item->_glass = glass;
     item->_parent = parent;
+    item->_title = glass->title();
+    // TODO update item info
+    // TODO update item icon
+    // TODO save to database, add to chindren only if no error
     (parent ? parent->_children : _items).append(item);
     // TODO sort items after inserting
-    // TODO save to database, return error
     return QString();
 }
 
-QString Catalog::updateGlass(GlassItem* item)
+QString Catalog::updateGlass(GlassItem* item, Glass *glass)
 {
+    // TODO save to database, update objects in internal lists only if no error
+    // TODO copy glass props instead of assigning pointer
+    item->_glass = glass;
+    item->_title = glass->title();
+    // TODO update item info
+    // TODO update item icon
     // TODO sort items after renaming
-    // TODO save to database, return error
-    return QString("err");
+    return QString();
 }
 
 QString Catalog::removeGlass(GlassItem* item)
@@ -96,5 +107,12 @@ QString Catalog::removeGlass(GlassItem* item)
     (item->parent() ? item->parent()->_children : _items).removeOne(item);
     delete item;
     // TODO remove from database, return error
+    return QString();
+}
+
+QString Catalog::loadGlass(GlassItem* item)
+{
+    item->_glass = new Glass;
+    // TODO load glass from database
     return QString();
 }

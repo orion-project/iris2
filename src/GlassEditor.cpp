@@ -1,4 +1,5 @@
 #include "Catalog.h"
+#include "Glass.h"
 #include "GlassEditor.h"
 #include "helpers/OriDialogs.h"
 #include "helpers/OriLayouts.h"
@@ -17,14 +18,14 @@ bool GlassEditor::createGlass(Catalog* catalog, FolderItem* parent)
 {
     GlassEditor editor(CreateGlass, catalog);
     editor._parentFolder = parent;
-    return editor.exec() != QDialog::Accepted;
+    return editor.exec() == QDialog::Accepted;
 }
 
 bool GlassEditor::editGlass(Catalog *catalog, GlassItem* item)
 {
     GlassEditor editor(EditGlass, catalog);
-    editor._glassItem = item;
-    return editor.exec() != QDialog::Accepted;
+    if (!editor.populate(item)) return false;
+    return editor.exec() == QDialog::Accepted;
 }
 
 GlassEditor::GlassEditor(DialogMode mode, Catalog *catalog) : QDialog(qApp->activeWindow()), _mode(mode), _catalog(catalog)
@@ -32,25 +33,41 @@ GlassEditor::GlassEditor(DialogMode mode, Catalog *catalog) : QDialog(qApp->acti
     setWindowTitle(tr("Material Properties"));
     setWindowIcon(QIcon(":/icon/glass"));
 
-    _nameEditor = new QLineEdit;
-//    auto formulaSelector = new QComboBox;
-//    auto lambdaMinEditor = new Ori::Widgets::ValueEdit;
-//    auto lambdaMaxEditor = new Ori::Widgets::ValueEdit;
-
-//    Ori::Layouts::Grid()
-//            .row(tr("Dispersion formula", formulaSelector))
-//            .row(tr("Min wavelength, <b>μm</b>"), lambdaMinEditor)
-//            .row(tr("Max wavelength, <b>μm</b>"), lambdaMaxEditor)
-//            .useFor(this);
+    _titleEditor = new QLineEdit;
+    _formulaSelector = new QComboBox;
+    _lambdaMinEditor = new Ori::Widgets::ValueEdit;
+    _lambdaMaxEditor = new Ori::Widgets::ValueEdit;
 
     auto layout = new QFormLayout;
-    layout->addRow(new QLabel(tr("Material name")), _nameEditor);
+    layout->addRow(new QLabel(tr("Material name")), _titleEditor);
+    layout->addRow(new QLabel(tr("Dispersion formula")), _formulaSelector);
+    layout->addRow(new QLabel(tr("Min wavelength, <b>μm</b>")), _lambdaMinEditor);
+    layout->addRow(new QLabel(tr("Max wavelength, <b>μm</b>")), _lambdaMaxEditor);
 
     auto buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     qApp->connect(buttons, &QDialogButtonBox::accepted, this, &GlassEditor::apply);
     qApp->connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     Ori::Layouts::LayoutV({layout, buttons}).useFor(this);
+}
+
+bool GlassEditor::populate(GlassItem* item)
+{
+    if (!item->glass())
+    {
+        auto res = _catalog->loadGlass(item);
+        if (!res.isEmpty())
+        {
+            Ori::Dlg::error(res);
+            return false;
+        }
+    }
+
+    _glassItem = item;
+    _titleEditor->setText(item->title());
+    _lambdaMinEditor->setValue(item->glass()->lambdaMin());
+    _lambdaMaxEditor->setValue(item->glass()->lambdaMax());
+    return true;
 }
 
 void GlassEditor::apply()
@@ -67,22 +84,19 @@ void GlassEditor::apply()
 
 QString GlassEditor::save()
 {
-    if (!_glassItem)
-        _glassItem = new GlassItem;
+    Glass *glass = _mode == CreateGlass
+            ? new Glass
+            : _glassItem->glass();
 
-    _glassItem->setTitle(glassTitle());
+    glass->_title = glassTitle();
+    glass->_lambdaMin = lambdaMin();
+    glass->_lambdaMax = lambdaMax();
 
-    if (_mode == CreateGlass)
-    {
-        return _catalog->createGlass(_parentFolder, _glassItem);
-    }
-    else
-    {
-        return _catalog->updateGlass(_glassItem);
-    }
+    return _mode == CreateGlass
+            ? _catalog->createGlass(_parentFolder, glass)
+            : _catalog->updateGlass(_glassItem, glass);
 }
 
-QString GlassEditor::glassTitle()
-{
-    return _nameEditor->text().trimmed();
-}
+QString GlassEditor::glassTitle() const { return _titleEditor->text().trimmed(); }
+double GlassEditor::lambdaMin() const { return _lambdaMinEditor->value(); }
+double GlassEditor::lambdaMax() const { return _lambdaMaxEditor->value(); }

@@ -1,13 +1,12 @@
 #ifndef CATALOG_H
 #define CATALOG_H
 
-#include "Glass.h"
-
 #include <QObject>
 #include <QList>
 
 class FolderItem;
 class GlassItem;
+class Glass;
 
 class CatalogItem
 {
@@ -16,7 +15,6 @@ public:
 
     int id() const { return _id; }
     const QString& title() const { return _title; }
-    void setTitle(const QString& title) { _title = title; }
     CatalogItem* parent() const { return _parent; }
     const QList<CatalogItem*>& children() const { return _children; }
 
@@ -34,18 +32,28 @@ private:
     friend class Catalog;
 };
 
+//------------------------------------------------------------------------------
 
 class FolderItem : public CatalogItem
 {
 };
 
+//------------------------------------------------------------------------------
 
 class GlassItem : public CatalogItem
 {
 public:
-    QString getInfo() const;
+    ~GlassItem();
+
+    Glass* glass() const { return _glass; }
+
+private:
+    Glass* _glass = nullptr;
+
+    friend class Catalog;
 };
 
+//------------------------------------------------------------------------------
 
 class Catalog : public QObject
 {
@@ -60,9 +68,10 @@ public:
     QString renameFolder(FolderItem* item, const QString& title);
     QString createFolder(FolderItem* parent, const QString& title);
     QString removeFolder(FolderItem* item);
-    QString createGlass(FolderItem* parent, GlassItem* item);
-    QString updateGlass(GlassItem* item);
+    QString createGlass(FolderItem* parent, Glass *glass);
+    QString updateGlass(GlassItem* item, Glass* glass);
     QString removeGlass(GlassItem* item);
+    QString loadGlass(GlassItem* item);
 
 private:
     QList<CatalogItem*> _items;

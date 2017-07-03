@@ -15,7 +15,7 @@
    id="svg3812"
    version="1.1"
    inkscape:version="0.48.2 r9819"
-   sodipodi:docname="icon_16.svg"
+   sodipodi:docname="main_16.svg"
    inkscape:export-filename="L:\projects\iris2\img\main_16.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
@@ -140,7 +140,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -156,10 +156,10 @@
        height="16"
        x="0"
        y="1036.3622"
-       ry="2.3088973" />
+       ry="0" />
     <path
        style="fill:#ffffff;fill-opacity:0.9;stroke:none"
-       d="m 0.43406876,1040.247 c -0.30326948,-0.581 -0.10002862,-1.5406 1.19603804,-1.5553 l 7.3564757,-0.017 c 0.6307456,0 1.3071095,0.2807 1.7147845,0.9876 l 4.837834,8.3944 c 0.676812,1.174 -0.207938,1.9738 -1.545412,1.918 l -6.9163154,-0.033 c -1.0918865,0.017 -1.3763822,-0.3763 -1.6433792,-0.8309 z"
+       d="m 15.648517,1040.247 c 0.303269,-0.581 0.100029,-1.5406 -1.196038,-1.5553 l -7.3564758,-0.017 c -0.6307456,0 -1.3071095,0.2807 -1.7147845,0.9876 l -4.83783403,8.3944 c -0.676812,1.174 0.207938,1.9738 1.54541203,1.918 l 6.9163154,-0.033 c 1.0918869,0.017 1.3763819,-0.3763 1.6433789,-0.8309 z"
        id="path3800"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccc" />
@@ -178,11 +178,11 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 294.38913,282.06484 -119.63273,-1e-5 -119.632742,0 59.816372,-103.60498 59.81636,-103.604992 59.81636,103.604992 z"
-       transform="matrix(0.03280269,0,0,-0.03201655,-0.064406,1048.8916)"
+       transform="matrix(-0.03280269,0,0,-0.03201655,16.146992,1048.8916)"
        inkscape:transform-center-y="1.1056531" />
     <path
        inkscape:transform-center-y="-1.1058661"
-       transform="matrix(-0.03280269,0,0,0.03201655,16.164224,1039.8315)"
+       transform="matrix(0.03280269,0,0,0.03201655,-0.08163833,1039.8315)"
        d="m 294.38913,282.06484 -119.63273,-1e-5 -119.632742,0 59.816372,-103.60498 59.81636,-103.604992 59.81636,103.604992 z"
        inkscape:randomized="0"
        inkscape:rounded="0"

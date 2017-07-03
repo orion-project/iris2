@@ -9,7 +9,7 @@
 
 MainWindow::MainWindow() : QMainWindow()
 {
-    Ori::Wnd::setWindowIcon(this, ":/windows/main"); // TODO make icon
+    Ori::Wnd::setWindowIcon(this, ":/icon/main");
 
     _catalog = new Catalog(this);
     _catalogView = new CatalogWidget;

@@ -3,6 +3,13 @@
 
 #include <QDebug>
 
+Glass* ShottFormula::makeGlass() { return new GlassShott(this); }
+Glass* SellmeierFormula::makeGlass() { return new GlassSellmeier(this); }
+Glass* ReznikFormula::makeGlass() { return new GlassReznik(this); }
+Glass* CustomFormula::makeGlass() { return new GlassCustom(this); }
+
+//------------------------------------------------------------------------------
+
 CatalogItem::~CatalogItem()
 {
     qDeleteAll(_children);
@@ -81,6 +88,7 @@ QString Catalog::createGlass(FolderItem* parent, Glass *glass)
     auto item = new GlassItem;
     item->_glass = glass;
     item->_parent = parent;
+    item->_formula = glass->formula();
     item->_title = glass->title();
     // TODO update item info
     // TODO update item icon
@@ -95,6 +103,7 @@ QString Catalog::updateGlass(GlassItem* item, Glass *glass)
     // TODO save to database, update objects in internal lists only if no error
     // TODO copy glass props instead of assigning pointer
     item->_glass = glass;
+    item->_formula = glass->formula();
     item->_title = glass->title();
     // TODO update item info
     // TODO update item icon
@@ -112,7 +121,7 @@ QString Catalog::removeGlass(GlassItem* item)
 
 QString Catalog::loadGlass(GlassItem* item)
 {
-    item->_glass = new Glass;
+    //item->_glass = new Glass;
     // TODO load glass from database
     return QString();
 }

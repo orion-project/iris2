@@ -3,63 +3,83 @@
 
 #include <QString>
 
+class DispersionFormula;
+
 class Glass
 {
 public:
     const QString& title() const { return _title; }
     double lambdaMin() const { return _lambdaMin; }
     double lambdaMax() const { return _lambdaMax; }
+    DispersionFormula* formula() const { return _formula; }
 
 //    virtual double calcIndex(const double& lambda) const = 0;
 //    virtual double calcIndex1(const double& lambda) const = 0;
 //    virtual double calcIndex2(const double& lambda) const = 0;
 
+protected:
+    Glass(DispersionFormula* formula) : _formula(formula) {}
+
+    double _lambdaMin, _lambdaMax;
+    DispersionFormula* _formula;
+
 private:
     QString _title;
-    double _lambdaMin, _lambdaMax;
-
-    void setLambdaMin(double value) { _lambdaMin = value; }
-    void setLambdaMax(double value) { _lambdaMax = value; }
 
     friend class Catalog;
     friend class GlassEditor;
 };
 
 
-//class GlassReznik : public Glass
-//{
-//public:
+class GlassShott : public Glass
+{
+public:
 //    double calcIndex(const double& lambda) const override { return 0; }
 //    double calcIndex1(const double& lambda) const override { return 0; }
 //    double calcIndex2(const double& lambda) const override { return 0; }
-//};
+
+private:
+    GlassShott(DispersionFormula* formula) : Glass(formula) {}
+    friend class ShottFormula;
+};
 
 
-//class GlassSelm : public Glass
-//{
-//public:
+class GlassSellmeier : public Glass
+{
+public:
 //    double calcIndex(const double& lambda) const override { return 0; }
 //    double calcIndex1(const double& lambda) const override { return 0; }
 //    double calcIndex2(const double& lambda) const override { return 0; }
-//};
+
+private:
+    GlassSellmeier(DispersionFormula* formula) : Glass(formula) {}
+    friend class SellmeierFormula;
+};
 
 
-//class GlassShott : public Glass
-//{
-//public:
+class GlassCustom : public Glass
+{
+public:
 //    double calcIndex(const double& lambda) const override { return 0; }
 //    double calcIndex1(const double& lambda) const override { return 0; }
 //    double calcIndex2(const double& lambda) const override { return 0; }
-//};
+
+private:
+    GlassCustom(DispersionFormula* formula) : Glass(formula) {}
+    friend class CustomFormula;
+};
 
 
-//class GlassCustom : public Glass
-//{
-//public:
+class GlassReznik : public Glass
+{
+public:
 //    double calcIndex(const double& lambda) const override { return 0; }
 //    double calcIndex1(const double& lambda) const override { return 0; }
 //    double calcIndex2(const double& lambda) const override { return 0; }
-//};
 
+private:
+    GlassReznik(DispersionFormula* formula) : Glass(formula) {}
+    friend class ReznikFormula;
+};
 
 #endif // GLASS_H

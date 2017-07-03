@@ -11,7 +11,7 @@ class CatalogModel : public QAbstractItemModel
 public:
     CatalogModel(Catalog* catalog) : _catalog(catalog)
     {
-        _iconGlass = QIcon(":/icon/glass");
+        _iconGlass = QIcon(":/icon/glass_blue");
         _iconFolder = QIcon(":/icon/folder_closed");
     }
 
@@ -76,7 +76,8 @@ public:
             // TODO different icons for opened and closed folder
             if (item->isFolder())
                 return _iconFolder;
-            // TODO different icons or types of glass
+            if (item->asGlass()->formula())
+                return item->asGlass()->formula()->icon();
             return _iconGlass;
         }
         return QVariant();

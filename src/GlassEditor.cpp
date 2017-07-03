@@ -34,7 +34,10 @@ GlassEditor::GlassEditor(DialogMode mode, Catalog *catalog) : QDialog(qApp->acti
     setWindowIcon(QIcon(":/icon/glass"));
 
     _titleEditor = new QLineEdit;
+
     _formulaSelector = new QComboBox;
+    for (DispersionFormula* formula: dispersionFormulas().values())
+        _formulaSelector->addItem(formula->icon(), tr(formula->name()), QString(formula->name()));
     _lambdaMinEditor = new Ori::Widgets::ValueEdit;
     _lambdaMaxEditor = new Ori::Widgets::ValueEdit;
 
@@ -67,6 +70,15 @@ bool GlassEditor::populate(GlassItem* item)
     _titleEditor->setText(item->title());
     _lambdaMinEditor->setValue(item->glass()->lambdaMin());
     _lambdaMaxEditor->setValue(item->glass()->lambdaMax());
+
+    QString formulaName(_glassItem->formula()->name());
+    for (int i = 0; i < _formulaSelector->count(); i++)
+        if (_formulaSelector->itemData(i).toString() == formulaName)
+        {
+            _formulaSelector->setCurrentIndex(i);
+            break;
+        }
+
     return true;
 }
 
@@ -85,7 +97,7 @@ void GlassEditor::apply()
 QString GlassEditor::save()
 {
     Glass *glass = _mode == CreateGlass
-            ? new Glass
+            ? formula()->makeGlass()
             : _glassItem->glass();
 
     glass->_title = glassTitle();
@@ -100,3 +112,4 @@ QString GlassEditor::save()
 QString GlassEditor::glassTitle() const { return _titleEditor->text().trimmed(); }
 double GlassEditor::lambdaMin() const { return _lambdaMinEditor->value(); }
 double GlassEditor::lambdaMax() const { return _lambdaMaxEditor->value(); }
+DispersionFormula* GlassEditor::formula() const { return dispersionFormulas()[_formulaSelector->currentData().toString()]; }

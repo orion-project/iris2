@@ -11,6 +11,7 @@ QT_END_NAMESPACE
 class Catalog;
 class GlassItem;
 class FolderItem;
+class DispersionFormula;
 
 namespace Ori {
 namespace Widgets {
@@ -43,6 +44,7 @@ private:
     void apply();
     QString save();
 
+    DispersionFormula* formula() const;
     QString glassTitle() const;
     double lambdaMin() const;
     double lambdaMax() const;

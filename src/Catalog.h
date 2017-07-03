@@ -98,6 +98,7 @@ public:
 
     int id() const { return _id; }
     const QString& title() const { return _title; }
+    const QString& info() const { return _info; }
     CatalogItem* parent() const { return _parent; }
     const QList<CatalogItem*>& children() const { return _children; }
 
@@ -108,11 +109,12 @@ public:
 
 private:
     int _id;
-    QString _title;
+    QString _title, _info;
     CatalogItem* _parent = nullptr;
     QList<CatalogItem*> _children;
 
     friend class Catalog;
+    friend class FoldersManager;
 };
 
 //------------------------------------------------------------------------------

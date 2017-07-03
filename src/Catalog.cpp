@@ -32,7 +32,7 @@ GlassItem::~GlassItem()
 
 QString Catalog::fileFilter()
 {
-    return QString(); // TODO
+    return tr("Iris Catalog Files (*.iris);;All files (*.*)");
 }
 
 CatalorResult Catalog::open(const QString& fileName)
@@ -43,7 +43,13 @@ CatalorResult Catalog::open(const QString& fileName)
 
     Catalog* catalog = new Catalog;
     catalog->_fileName = fileName;
-    // TODO load folders
+
+    res = CatalogStore::foldersManager()->selectAll(catalog->_items);
+    if (!res.isEmpty())
+    {
+        delete catalog;
+        return CatalorResult::fail(res);
+    }
 
     return CatalorResult::ok(catalog);
 }
@@ -62,23 +68,6 @@ CatalorResult Catalog::create(const QString& fileName)
 
 Catalog::Catalog() : QObject()
 {
-    for (int i = 0; i < 10; i++)
-    {
-        auto item = new FolderItem;
-        item->_id = i;
-        item->_title = QString("Item %1").arg(i);
-
-        for (int j = 0; j < 10; j++)
-        {
-            auto subitem = new GlassItem;
-            subitem->_id = j*i;
-            subitem->_title = QString("Subitem %1").arg(j*i);
-            subitem->_parent = item;
-            item->_children.append(subitem);
-        }
-
-        _items.append(item);
-    }
 }
 
 Catalog::~Catalog()
@@ -99,9 +88,16 @@ QString Catalog::createFolder(FolderItem* parent, const QString& title)
     FolderItem* folder = new FolderItem;
     folder->_title = title;
     folder->_parent = parent;
+
+    auto res = CatalogStore::foldersManager()->create(folder);
+    if (!res.isEmpty())
+    {
+        delete folder;
+        return res;
+    }
+
     (parent ? parent->_children : _items).append(folder);
     // TODO sort items after inserting
-    // TODO save to database, return error
     return QString();
 }
 

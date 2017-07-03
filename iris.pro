@@ -37,7 +37,8 @@ SOURCES += src/main.cpp\
     src/Glass.cpp \
     src/Catalog.cpp \
     src/GlassEditor.cpp \
-    src/CatalogStore.cpp
+    src/CatalogStore.cpp \
+    src/SqlHelper.cpp
 
 HEADERS  += src/MainWindow.h \
     src/CatalogWidget.h \
@@ -46,4 +47,5 @@ HEADERS  += src/MainWindow.h \
     src/Catalog.h \
     src/GlassEditor.h \
     src/CatalogModel.h \
-    src/CatalogStore.h
+    src/CatalogStore.h \
+    src/SqlHelper.h

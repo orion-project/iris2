@@ -2,6 +2,7 @@
 #define CATALOGMODEL_H
 
 #include <QAbstractItemModel>
+#include <QDebug>
 #include <QIcon>
 
 #include "Catalog.h"
@@ -23,7 +24,11 @@ public:
     QModelIndex index(int row, int column, const QModelIndex &parent) const override
     {
         auto parentItem = catalogItem(parent);
-        auto childItem = parentItem ? parentItem->children().at(row) : _catalog->items().at(row);
+        CatalogItem *childItem = nullptr;
+        if (parentItem && row < parentItem->children().size())
+            childItem = parentItem->children().at(row);
+        else if (row < _catalog->items().size())
+            childItem = _catalog->items().at(row);
         return createIndex(row, column, childItem);
     }
 

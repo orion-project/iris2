@@ -31,6 +31,10 @@ struct CatalogSelection
 
 CatalogWidget::CatalogWidget() : QWidget()
 {
+    _rootMenu = new QMenu(this);
+    _rootMenu->addAction(tr("New Folder..."), this, &CatalogWidget::createFolder);
+    _rootMenu->addAction(tr("New Material..."), this, &CatalogWidget::createGlass);
+
     _folderMenu = new QMenu(this);
     _folderMenuHeader = makeHeaderItem(_folderMenu);
     _folderMenu->addSeparator();
@@ -86,10 +90,14 @@ void CatalogWidget::setCatalog(Catalog* catalog)
 
 void CatalogWidget::contextMenuRequested(const QPoint &pos)
 {
-    CatalogSelection selected(_catalogView);
-    if (!selected.item) return;
+    if (!_catalogModel) return;
 
-    if (selected.item->isFolder())
+    CatalogSelection selected(_catalogView);
+    if (!selected.item)
+    {
+        _rootMenu->popup(_catalogView->mapToGlobal(pos));
+    }
+    else if (selected.item->isFolder())
     {
         _folderMenuHeader->setText(selected.item->title());
         _folderMenu->popup(_catalogView->mapToGlobal(pos));

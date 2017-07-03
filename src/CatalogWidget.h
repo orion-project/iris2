@@ -41,10 +41,6 @@ private:
     void createGlass();
     void editGlass();
     void deleteGlass();
-
-    CatalogItem* selectedItem() const;
-    FolderItem* selectedFolder() const;
-    GlassItem* selectedGlass() const;
 };
 
 #endif // CATALOGWIDGET_H

@@ -5,6 +5,7 @@
 #include <QList>
 #include <QIcon>
 
+class Catalog;
 class FolderItem;
 class GlassItem;
 class Glass;
@@ -67,6 +68,29 @@ inline const QMap<QString, DispersionFormula*>& dispersionFormulas()
 
 //------------------------------------------------------------------------------
 
+template <typename TResult> class OperationResult
+{
+public:
+    TResult result() const { return _result; }
+    const QString& error() const { return _error; }
+    bool ok() const { return _error.isEmpty(); }
+
+    static OperationResult fail(const QString& error) { return OperationResult(error); }
+    static OperationResult ok(TResult result) { return OperationResult(QString(), result); }
+
+private:
+    OperationResult(const QString& error): _error(error) {}
+    OperationResult(const QString& error, TResult result): _error(error), _result(result) {}
+
+    QString _error;
+    TResult _result;
+};
+
+typedef OperationResult<Catalog*> CatalorResult;
+typedef OperationResult<int> IntResult;
+
+//------------------------------------------------------------------------------
+
 class CatalogItem
 {
 public:
@@ -121,10 +145,17 @@ class Catalog : public QObject
     Q_OBJECT
 
 public:
-    Catalog(QObject* parent);
+    Catalog();
     ~Catalog();
 
+    static QString fileFilter();
+    static CatalorResult open(const QString& fileName);
+    static CatalorResult create(const QString& fileName);
+
+    const QString& fileName() const { return _fileName; }
     const QList<CatalogItem*>& items() const { return _items; }
+
+    IntResult countGlasses() const;
 
     QString renameFolder(FolderItem* item, const QString& title);
     QString createFolder(FolderItem* parent, const QString& title);
@@ -135,7 +166,9 @@ public:
     QString loadGlass(GlassItem* item);
 
 private:
+    QString _fileName;
     QList<CatalogItem*> _items;
 };
 
 #endif // CATALOG_H
+

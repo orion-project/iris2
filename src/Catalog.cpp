@@ -1,4 +1,5 @@
 #include "Catalog.h"
+#include "CatalogStore.h"
 #include "Glass.h"
 
 #include <QDebug>
@@ -29,7 +30,37 @@ GlassItem::~GlassItem()
 
 //------------------------------------------------------------------------------
 
-Catalog::Catalog(QObject* parent) : QObject(parent)
+QString Catalog::fileFilter()
+{
+    return QString(); // TODO
+}
+
+CatalorResult Catalog::open(const QString& fileName)
+{
+    QString res = CatalogStore::openDatabase(fileName);
+    if (!res.isEmpty())
+        return CatalorResult::fail(res);
+
+    Catalog* catalog = new Catalog;
+    catalog->_fileName = fileName;
+    // TODO load folders
+
+    return CatalorResult::ok(catalog);
+}
+
+CatalorResult Catalog::create(const QString& fileName)
+{
+    QString res = CatalogStore::newDatabase(fileName);
+    if (!res.isEmpty())
+        return CatalorResult::fail(res);
+
+    Catalog* catalog = new Catalog;
+    catalog->_fileName = fileName;
+
+    return CatalorResult::ok(catalog);
+}
+
+Catalog::Catalog() : QObject()
 {
     for (int i = 0; i < 10; i++)
     {
@@ -124,4 +155,10 @@ QString Catalog::loadGlass(GlassItem* item)
     //item->_glass = new Glass;
     // TODO load glass from database
     return QString();
+}
+
+IntResult Catalog::countGlasses() const
+{
+    // TODO count glasses
+    return IntResult::ok(42);
 }

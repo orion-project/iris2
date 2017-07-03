@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -36,7 +36,8 @@ SOURCES += src/main.cpp\
     src/InfoWidget.cpp \
     src/Glass.cpp \
     src/Catalog.cpp \
-    src/GlassEditor.cpp
+    src/GlassEditor.cpp \
+    src/CatalogStore.cpp
 
 HEADERS  += src/MainWindow.h \
     src/CatalogWidget.h \
@@ -44,4 +45,5 @@ HEADERS  += src/MainWindow.h \
     src/Glass.h \
     src/Catalog.h \
     src/GlassEditor.h \
-    src/CatalogModel.h
+    src/CatalogModel.h \
+    src/CatalogStore.h

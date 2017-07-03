@@ -74,48 +74,31 @@ QAction* CatalogWidget::makeHeaderItem(QMenu* menu)
 void CatalogWidget::setCatalog(Catalog* catalog)
 {
     _catalog = catalog;
-    if (_catalogModel) delete _catalogModel;
-    _catalogModel = new CatalogModel(_catalog);
+    if (_catalogModel)
+    {
+        delete _catalogModel;
+        _catalogModel = nullptr;
+    }
+    if (_catalog)
+        _catalogModel = new CatalogModel(_catalog);
     _catalogView->setModel(_catalogModel);
 }
 
 void CatalogWidget::contextMenuRequested(const QPoint &pos)
 {
-    auto item = selectedItem();
-    if (!item) return;
+    CatalogSelection selected(_catalogView);
+    if (!selected.item) return;
 
-    if (item->isFolder())
+    if (selected.item->isFolder())
     {
-        _folderMenuHeader->setText(item->title());
+        _folderMenuHeader->setText(selected.item->title());
         _folderMenu->popup(_catalogView->mapToGlobal(pos));
     }
     else
     {
-        _glassMenuHeader->setText(item->title());
+        _glassMenuHeader->setText(selected.item->title());
         _glassMenu->popup(_catalogView->mapToGlobal(pos));
     }
-}
-
-CatalogItem* CatalogWidget::selectedItem() const
-{
-    if (!_catalogModel) return nullptr;
-
-    auto index = _catalogView->currentIndex();
-    if (!index.isValid()) return nullptr;
-
-    return CatalogModel::catalogItem(index);;
-}
-
-FolderItem* CatalogWidget::selectedFolder() const
-{
-    auto item = selectedItem();
-    return item ? item->asFolder() : nullptr;
-}
-
-GlassItem* CatalogWidget::selectedGlass() const
-{
-    auto item = selectedItem();
-    return item ? item->asGlass() : nullptr;
 }
 
 void CatalogWidget::createFolder()

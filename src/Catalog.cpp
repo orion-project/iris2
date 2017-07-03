@@ -74,20 +74,18 @@ QString Catalog::removeFolder(FolderItem* item)
     return QString();
 }
 
-QString Catalog::createGlass(FolderItem* parent, const QString& title)
+QString Catalog::createGlass(FolderItem* parent, GlassItem *item)
 {
-    GlassItem* glass = new GlassItem;
-    glass->_title = title;
-    glass->_parent = parent;
-    (parent ? parent->_children : _items).append(glass);
+    // TODO make glass id
+    item->_parent = parent;
+    (parent ? parent->_children : _items).append(item);
     // TODO sort items after inserting
     // TODO save to database, return error
     return QString();
 }
 
-QString Catalog::updateGlass(GlassItem* item, const QString& title)
+QString Catalog::updateGlass(GlassItem* item)
 {
-    item->_title = title;
     // TODO sort items after renaming
     // TODO save to database, return error
     return QString("err");

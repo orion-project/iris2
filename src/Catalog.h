@@ -16,6 +16,7 @@ public:
 
     int id() const { return _id; }
     const QString& title() const { return _title; }
+    void setTitle(const QString& title) { _title = title; }
     CatalogItem* parent() const { return _parent; }
     const QList<CatalogItem*>& children() const { return _children; }
 
@@ -59,8 +60,8 @@ public:
     QString renameFolder(FolderItem* item, const QString& title);
     QString createFolder(FolderItem* parent, const QString& title);
     QString removeFolder(FolderItem* item);
-    QString createGlass(FolderItem* parent, const QString& title);
-    QString updateGlass(GlassItem* item, const QString &title);
+    QString createGlass(FolderItem* parent, GlassItem* item);
+    QString updateGlass(GlassItem* item);
     QString removeGlass(GlassItem* item);
 
 private:

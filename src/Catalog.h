@@ -59,11 +59,12 @@ inline const QMap<QString, DispersionFormula*>& dispersionFormulas()
     static SellmeierFormula sellmeier;
     static ReznikFormula reznik;
     static CustomFormula custom;
-    static QMap<QString, DispersionFormula*> formulas;
-    formulas.insert(shott.name(), &shott);
-    formulas.insert(sellmeier.name(), &sellmeier);
-    formulas.insert(reznik.name(), &reznik);
-    formulas.insert(custom.name(), &custom);
+    static QMap<QString, DispersionFormula*> formulas {
+        { shott.name(), &shott },
+        { sellmeier.name(), &sellmeier },
+        { reznik.name(), &reznik },
+        { custom.name(), &custom }
+    };
     return formulas;
 }
 

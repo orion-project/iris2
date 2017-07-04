@@ -38,12 +38,11 @@ CatalogWidget::CatalogWidget() : QWidget()
     _folderMenu = new QMenu(this);
     _folderMenuHeader = makeHeaderItem(_folderMenu);
     _folderMenu->addSeparator();
-    _folderMenu->addAction(tr("New Folder..."), this, &CatalogWidget::createFolder);
-    _folderMenu->addAction(tr("Rename Folder..."), this, &CatalogWidget::renameFolder);
-    _folderMenu->addSeparator();
-    _folderMenu->addAction(tr("Delete Folder"), this, &CatalogWidget::deleteFolder);
-    _folderMenu->addSeparator();
+    _folderMenu->addAction(tr("New Subfolder..."), this, &CatalogWidget::createFolder);
     _folderMenu->addAction(tr("New Material..."), this, &CatalogWidget::createGlass);
+    _folderMenu->addSeparator();
+    _folderMenu->addAction(tr("Rename Folder..."), this, &CatalogWidget::renameFolder);
+    _folderMenu->addAction(tr("Delete Folder"), this, &CatalogWidget::deleteFolder);
 
     _glassMenu = new QMenu(this);
     _glassMenuHeader = makeHeaderItem(_glassMenu);

@@ -34,3 +34,4 @@ CMakeLists.txt.user*
 bin/iris
 bin/iris.exe
 old
+tmp

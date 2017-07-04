@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QMap>
 #include <QIcon>
 
 class Catalog;
@@ -96,7 +97,6 @@ class CatalogItem
 public:
     virtual ~CatalogItem();
 
-    int id() const { return _id; }
     const QString& title() const { return _title; }
     const QString& info() const { return _info; }
     CatalogItem* parent() const { return _parent; }
@@ -108,19 +108,25 @@ public:
     GlassItem* asGlass();
 
 private:
-    int _id;
     QString _title, _info;
     CatalogItem* _parent = nullptr;
     QList<CatalogItem*> _children;
 
     friend class Catalog;
-    friend class FoldersManager;
+    friend class FolderManager;
 };
 
 //------------------------------------------------------------------------------
 
 class FolderItem : public CatalogItem
 {
+public:
+    int id() const { return _id; }
+
+private:
+    int _id;
+
+    friend class FolderManager;
 };
 
 //------------------------------------------------------------------------------

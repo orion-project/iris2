@@ -44,7 +44,7 @@ CatalorResult Catalog::open(const QString& fileName)
     Catalog* catalog = new Catalog;
     catalog->_fileName = fileName;
 
-    res = CatalogStore::foldersManager()->selectAll(catalog->_items);
+    res = CatalogStore::folderManager()->selectAll(catalog->_items);
     if (!res.isEmpty())
     {
         delete catalog;
@@ -89,7 +89,7 @@ QString Catalog::createFolder(FolderItem* parent, const QString& title)
     folder->_title = title;
     folder->_parent = parent;
 
-    auto res = CatalogStore::foldersManager()->create(folder);
+    auto res = CatalogStore::folderManager()->create(folder);
     if (!res.isEmpty())
     {
         delete folder;
@@ -111,15 +111,20 @@ QString Catalog::removeFolder(FolderItem* item)
 
 QString Catalog::createGlass(FolderItem* parent, Glass *glass)
 {
-    // TODO make item id
     auto item = new GlassItem;
     item->_glass = glass;
     item->_parent = parent;
     item->_formula = glass->formula();
     item->_title = glass->title();
-    // TODO update item info
-    // TODO update item icon
-    // TODO save to database, add to chindren only if no error
+    // TODO prepare glass info before saving
+
+    auto res = CatalogStore::glassManager()->create(item);
+    if (!res.isEmpty())
+    {
+        delete item;
+        return res;
+    }
+
     (parent ? parent->_children : _items).append(item);
     // TODO sort items after inserting
     return QString();

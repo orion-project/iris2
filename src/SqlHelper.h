@@ -86,6 +86,14 @@ public:
 
     virtual QString sqlCreate() const = 0;
 
+    virtual QString sqlSelectAll() const {
+        return QString("SELECT * FROM %1").arg(_tableName);
+    }
+
+    virtual QString sqlSelectMaxId() const {
+        return QString("SELECT MAX(Id) FROM %1").arg(_tableName);
+    }
+
 protected:
     TableDef(const QString& tableName): _tableName(tableName) {}
 

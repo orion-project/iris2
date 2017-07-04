@@ -5,6 +5,7 @@
 #include "helpers/OriDialogs.h"
 #include "helpers/OriWindows.h"
 #include "tools/OriMruList.h"
+#include "tools/OriSettings.h"
 #include "tools/OriWaitCursor.h"
 #include "widgets/OriMruMenu.h"
 
@@ -18,6 +19,7 @@
 
 MainWindow::MainWindow() : QMainWindow()
 {
+    setObjectName("mainWindow");
     Ori::Wnd::setWindowIcon(this, ":/icon/main");
 
     _catalogView = new CatalogWidget;
@@ -56,9 +58,11 @@ void MainWindow::createMenu()
 void MainWindow::createDocks()
 {
     auto dockCatalog = new QDockWidget(tr("Catalog"));
+    dockCatalog->setObjectName("CatalogPanel");
     dockCatalog->setWidget(_catalogView);
 
     auto dockInfo = new QDockWidget(tr("Info"));
+    dockInfo->setObjectName("InfoPanel");
     dockInfo->setWidget(_infoView);
 
     addDockWidget(Qt::LeftDockWidgetArea, dockCatalog);
@@ -78,13 +82,20 @@ void MainWindow::createStatusBar()
 void MainWindow::saveSettings()
 {
     // TODO save dock configuration
-    // TODO save window geometry
+
+    Ori::Settings s;
+    s.storeWindowGeometry(this);
+    s.storeDockState(this);
 }
 
 void MainWindow::loadSettings()
 {
     // TODO load dock configuration
-    // TODO load window geometry
+
+    Ori::Settings s;
+    s.restoreWindowGeometry(this);
+    s.restoreDockState(this);
+    _mruList->load(s.settings());
 }
 
 void MainWindow::newCatalog()

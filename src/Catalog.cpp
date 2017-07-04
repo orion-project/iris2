@@ -77,19 +77,18 @@ CatalorResult Catalog::open(const QString& fileName)
                 qWarning() << tr("Some materials are stored in folder #%1 but that "
                                  "is not found in the directory.").arg(folderId);
                 qDeleteAll(glasses.items[folderId]);
+                continue;
             }
+            FolderItem *parent = folders.items[folderId];
             for (GlassItem* item: glasses.items[folderId])
-                folders.items[folderId]->_children.append(item);
-
-            qDebug() << folders.items[folderId]->id() << folders.items[folderId]->title() << folders.items[folderId]->isFolder();
-            for (auto item: folders.items[folderId]->children())
-                qDebug() << item->title() << item->isGlass() << item->isFolder();
+            {
+                item->_parent = parent;
+                parent->_children.append(item);
+            }
         }
         else
             for (GlassItem* item: glasses.items[folderId])
                 catalog->_items.append(item);
-
-
     }
 
     return CatalorResult::ok(catalog);
@@ -114,6 +113,8 @@ Catalog::Catalog() : QObject()
 Catalog::~Catalog()
 {
     qDeleteAll(_items);
+
+    CatalogStore::closeDatabase();
 }
 
 QString Catalog::renameFolder(FolderItem* item, const QString& title)

@@ -189,9 +189,6 @@ GlassesResult GlassManager::selectAll() const
         if (!result.items.contains(parentId))
             result.items.insert(parentId, QList<GlassItem*>());
         ((QList<GlassItem*>&)result.items[parentId]).append(item);
-
-//        for (auto item: result.items[parentId])
-//            qDebug() << parentId << item->glass()->id() << item->glass()->title();
     }
 
     return result;

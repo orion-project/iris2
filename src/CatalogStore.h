@@ -48,6 +48,7 @@ public:
 
 namespace CatalogStore {
 
+void closeDatabase();
 QString newDatabase(const QString fileName);
 QString openDatabase(const QString fileName);
 

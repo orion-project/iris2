@@ -23,33 +23,19 @@ public:
 
     QModelIndex index(int row, int column, const QModelIndex &parent) const override
     {
-        qDebug() << "INPUT" << row << column << parent.internalPointer() << parent.isValid();
-
         if (!parent.isValid())
         {
             if (row < _catalog->items().size())
-            {
-                qDebug() << "OUTPUT" << _catalog->items().at(row)->title();
                 return createIndex(row, column, _catalog->items().at(row));
-            }
-            qDebug() << "OUTPUT: empty";
             return QModelIndex();
         }
 
         auto parentItem = catalogItem(parent);
-        if (!parentItem)
-        {
-            qDebug() << "OUTPUT: empty";
-            return QModelIndex();
-        }
+        if (!parentItem) return QModelIndex();
 
         if (row < parentItem->children().size())
-        {
-            qDebug() << "OUTPUT" << parentItem->children().at(row)->title();
             return createIndex(row, column, parentItem->children().at(row));
-        }
 
-        qDebug() << "OUTPUT: empty";
         return QModelIndex();
     }
 
@@ -58,11 +44,13 @@ public:
         if (!child.isValid()) return QModelIndex();
 
         auto childItem = catalogItem(child);
-        auto parentItem = childItem ? childItem->parent() : nullptr;
+        if (!childItem) return QModelIndex();
+
+        auto parentItem = childItem->parent();
         if (!parentItem) return QModelIndex();
 
         int row = parentItem->parent()
-                ? parentItem->children().indexOf(parentItem)
+                ? parentItem->parent()->children().indexOf(parentItem)
                 : _catalog->items().indexOf(parentItem);
 
         return createIndex(row, 0, parentItem);
@@ -71,13 +59,9 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         if (!parent.isValid())
-        {
-            qDebug() << "ROW COUNT 1" << _catalog->items().size();
             return _catalog->items().size();
-        }
 
         auto item = catalogItem(parent);
-        qDebug() << "ROW COUNT 2" << (item ? item->children().size() : 0);
         return item ? item->children().size() : 0;
     }
 
@@ -102,7 +86,6 @@ public:
             return QVariant();
         if (role == Qt::DisplayRole)
         {
-            return QString("%1;%2 %3").arg(index.row()).arg(index.column()).arg(long(index.internalPointer()));
             auto item = catalogItem(index);
             return item ? item->title() : QVariant();
         }

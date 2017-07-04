@@ -114,6 +114,7 @@ private:
 
     friend class Catalog;
     friend class FolderManager;
+    friend class GlassManager;
 };
 
 //------------------------------------------------------------------------------
@@ -144,6 +145,7 @@ private:
     DispersionFormula* _formula = nullptr;
 
     friend class Catalog;
+    friend class GlassManager;
 };
 
 //------------------------------------------------------------------------------

@@ -11,16 +11,29 @@ class GlassTableDef;
 
 //------------------------------------------------------------------------------
 
+struct FoldersResult
+{
+    QString error;
+    QMap<int, FolderItem*> items;
+};
+
 class FolderManager
 {
 public:
     FolderTableDef* table() const;
 
     QString create(FolderItem* folder) const;
-    QString selectAll(QList<CatalogItem*>& roots) const;
+    FoldersResult selectAll() const;
 };
 
 //------------------------------------------------------------------------------
+
+struct GlassesResult
+{
+    QString error;
+    QStringList warnings;
+    QMap<int, QList<GlassItem*>> items;
+};
 
 class GlassManager
 {
@@ -28,6 +41,7 @@ public:
     GlassTableDef* table() const;
 
     QString create(GlassItem* item) const;
+    GlassesResult selectAll() const;
 };
 
 //------------------------------------------------------------------------------

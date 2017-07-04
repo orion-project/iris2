@@ -10,6 +10,7 @@ class Glass
 public:
     int id() const { return _id; }
     const QString& title() const { return _title; }
+    const QString& comment() const { return _comment; }
     double lambdaMin() const { return _lambdaMin; }
     double lambdaMax() const { return _lambdaMax; }
     DispersionFormula* formula() const { return _formula; }
@@ -26,7 +27,7 @@ protected:
 
 private:
     int _id;
-    QString _title;
+    QString _title, _comment;
 
     friend class Catalog;
     friend class GlassEditor;
@@ -86,3 +87,4 @@ private:
 };
 
 #endif // GLASS_H
+

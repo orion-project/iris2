@@ -41,15 +41,19 @@ public:
     const QString parent = "Parent";
     const QString title = "Title";
     const QString info = "Info";
+    const QString comment = "Comment";
     const QString formula = "Formula";
+    const QString lambdaMin = "LambdaMin";
+    const QString lambdaMax = "LambdaMax";
 
     QString sqlCreate() const override {
-        return "CREATE TABLE IF NOT EXISTS Glass (Id, Parent, Title, Info, Formula)";
+        return "CREATE TABLE IF NOT EXISTS Glass "
+               "(Id, Parent, Title, Info, Comment, Formula, LambdaMin, LambdaMax)";
     }
 
     const QString sqlInsert =
-        "INSERT INTO Glass (Id, Parent, Title, Info, Formula) "
-        "VALUES (:Id, :Parent, :Title, :Info, :Formula)";
+        "INSERT INTO Glass (Id, Parent, Title, Info, Comment, Formula, LambdaMin, LambdaMax) "
+        "VALUES (:Id, :Parent, :Title, :Info, :Comment, :Formula, :LambdaMin, :LambdaMax)";
 };
 
 //------------------------------------------------------------------------------
@@ -76,40 +80,39 @@ QString FolderManager::create(FolderItem* folder) const
     return QString();
 }
 
-QString FolderManager::selectAll(QList<CatalogItem*>& roots) const
+FoldersResult FolderManager::selectAll() const
 {
+    FoldersResult result;
+
     SelectQuery query(table()->sqlSelectAll());
     if (query.isFailed())
-        return qApp->tr("Unable to load folder list.\n\n%1").arg(query.error());
-
-    QMap<int, FolderItem*> items;
+    {
+        result.error = qApp->tr("Unable to load folder list.\n\n%1").arg(query.error());
+        return result;
+    }
 
     while (query.next())
     {
         auto r = query.record();
         int id = r.value(table()->id).toInt();
-        if (!items.contains(id))
-            items.insert(id, new FolderItem);
-        auto item = items[id];
+        if (!result.items.contains(id))
+            result.items.insert(id, new FolderItem);
+        auto item = result.items[id];
         item->_id = id;
         item->_title = r.value(table()->title).toString();
         item->_info = r.value(table()->info).toString();
         int parentId = r.value(table()->parent).toInt();
         if (parentId > 0)
         {
-            if (!items.contains(parentId))
-                items.insert(parentId, new FolderItem);
-            auto parentItem = items[parentId];
+            if (!result.items.contains(parentId))
+                result.items.insert(parentId, new FolderItem);
+            auto parentItem = result.items[parentId];
             parentItem->_children.append(item);
             item->_parent = parentItem;
         }
     }
 
-    for (auto item: items.values())
-        if (!item->parent())
-            roots.append(item);
-
-    return QString();
+    return result;
 }
 
 //------------------------------------------------------------------------------
@@ -128,16 +131,70 @@ QString GlassManager::create(GlassItem* item) const
     item->glass()->_id = queryId.record().value(0).toInt() + 1;
 
     auto res = ActionQuery(table()->sqlInsert)
-            .param(table()->id, item->glass()->id())
             .param(table()->parent, item->parent() ? item->parent()->asFolder()->id() : 0)
+            .param(table()->id, item->glass()->id())
             .param(table()->title, item->glass()->title())
             .param(table()->info, item->info())
-            .param(table()->formula, item->formula()->name())
+            .param(table()->comment, item->glass()->comment())
+            .param(table()->lambdaMin, item->glass()->lambdaMin())
+            .param(table()->lambdaMax, item->glass()->lambdaMax())
+            .param(table()->formula, item->glass()->formula()->name())
             .exec();
     if (!res.isEmpty())
         return qApp->tr("Failed to create new material.\n\n%1").arg(res);
 
     return QString();
+}
+
+GlassesResult GlassManager::selectAll() const
+{
+    GlassesResult result;
+
+    SelectQuery query(table()->sqlSelectAll());
+    if (query.isFailed())
+    {
+        result.error = qApp->tr("Unable to load materials.\n\n%1").arg(query.error());
+        return result;
+    }
+
+    while (query.next())
+    {
+        auto r = query.record();
+
+        int id = r.value(table()->id).toInt();
+        QString title = r.value(table()->title).toString();
+        QString formulaName = r.value(table()->formula).toString();
+        if (!dispersionFormulas().contains(formulaName))
+        {
+            result.warnings.append(qApp->tr("Skip material #%1 '%2': "
+                                            "unknown dispersion formula '%3'.")
+                                   .arg(id).arg(title).arg(formulaName));
+            continue;
+        }
+
+        Glass* glass = dispersionFormulas()[formulaName]->makeGlass();
+        glass->_id = id;
+        glass->_title = title;
+        glass->_comment = r.value(table()->comment).toString();
+        glass->_lambdaMin = r.value(table()->lambdaMin).toDouble();
+        glass->_lambdaMax = r.value(table()->lambdaMax).toDouble();
+
+        GlassItem *item = new GlassItem;
+        item->_glass = glass;
+        item->_formula = glass->formula();
+        item->_title = glass->title();
+        item->_info = r.value(table()->info).toString();
+
+        int parentId = r.value(table()->parent).toInt();
+        if (!result.items.contains(parentId))
+            result.items.insert(parentId, QList<GlassItem*>());
+        ((QList<GlassItem*>&)result.items[parentId]).append(item);
+
+//        for (auto item: result.items[parentId])
+//            qDebug() << parentId << item->glass()->id() << item->glass()->title();
+    }
+
+    return result;
 }
 
 //------------------------------------------------------------------------------

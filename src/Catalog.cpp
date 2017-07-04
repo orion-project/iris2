@@ -44,11 +44,52 @@ CatalorResult Catalog::open(const QString& fileName)
     Catalog* catalog = new Catalog;
     catalog->_fileName = fileName;
 
-    res = CatalogStore::folderManager()->selectAll(catalog->_items);
-    if (!res.isEmpty())
+    // NOTE: we do not expect a huge amount of folders
+    // and glasses in catalog so load all of them at once.
+    FoldersResult folders = CatalogStore::folderManager()->selectAll();
+    if (!folders.error.isEmpty())
     {
         delete catalog;
-        return CatalorResult::fail(res);
+        return CatalorResult::fail(folders.error);
+    }
+
+    for (FolderItem* item: folders.items.values())
+        if (!item->parent())
+            catalog->_items.append(item);
+
+    GlassesResult glasses = CatalogStore::glassManager()->selectAll();
+    if (!glasses.error.isEmpty())
+    {
+        delete catalog;
+        return CatalorResult::fail(glasses.error);
+    }
+
+    if (!glasses.warnings.isEmpty())
+        for (auto warning: glasses.warnings)
+            qWarning() << warning; // TODO make protocol window
+
+    for (int folderId: glasses.items.keys())
+    {
+        if (folderId > 0)
+        {
+            if (!folders.items.contains(folderId))
+            {
+                qWarning() << tr("Some materials are stored in folder #%1 but that "
+                                 "is not found in the directory.").arg(folderId);
+                qDeleteAll(glasses.items[folderId]);
+            }
+            for (GlassItem* item: glasses.items[folderId])
+                folders.items[folderId]->_children.append(item);
+
+            qDebug() << folders.items[folderId]->id() << folders.items[folderId]->title() << folders.items[folderId]->isFolder();
+            for (auto item: folders.items[folderId]->children())
+                qDebug() << item->title() << item->isGlass() << item->isFolder();
+        }
+        else
+            for (GlassItem* item: glasses.items[folderId])
+                catalog->_items.append(item);
+
+
     }
 
     return CatalorResult::ok(catalog);
@@ -116,7 +157,7 @@ QString Catalog::createGlass(FolderItem* parent, Glass *glass)
     item->_parent = parent;
     item->_formula = glass->formula();
     item->_title = glass->title();
-    // TODO prepare glass info before saving
+    item->_info = QString(); // TODO prepare glass info before saving
 
     auto res = CatalogStore::glassManager()->create(item);
     if (!res.isEmpty())

@@ -48,6 +48,7 @@ private:
     QString glassTitle() const;
     double lambdaMin() const;
     double lambdaMax() const;
+    QString generateInfo() const;
 };
 
 #endif // GLASSEDITOR_H

@@ -23,13 +23,34 @@ public:
 
     QModelIndex index(int row, int column, const QModelIndex &parent) const override
     {
+        qDebug() << "INPUT" << row << column << parent.internalPointer() << parent.isValid();
+
+        if (!parent.isValid())
+        {
+            if (row < _catalog->items().size())
+            {
+                qDebug() << "OUTPUT" << _catalog->items().at(row)->title();
+                return createIndex(row, column, _catalog->items().at(row));
+            }
+            qDebug() << "OUTPUT: empty";
+            return QModelIndex();
+        }
+
         auto parentItem = catalogItem(parent);
-        CatalogItem *childItem = nullptr;
-        if (parentItem && row < parentItem->children().size())
-            childItem = parentItem->children().at(row);
-        else if (row < _catalog->items().size())
-            childItem = _catalog->items().at(row);
-        return createIndex(row, column, childItem);
+        if (!parentItem)
+        {
+            qDebug() << "OUTPUT: empty";
+            return QModelIndex();
+        }
+
+        if (row < parentItem->children().size())
+        {
+            qDebug() << "OUTPUT" << parentItem->children().at(row)->title();
+            return createIndex(row, column, parentItem->children().at(row));
+        }
+
+        qDebug() << "OUTPUT: empty";
+        return QModelIndex();
     }
 
     QModelIndex parent(const QModelIndex &child) const override
@@ -49,8 +70,15 @@ public:
 
     int rowCount(const QModelIndex &parent) const override
     {
+        if (!parent.isValid())
+        {
+            qDebug() << "ROW COUNT 1" << _catalog->items().size();
+            return _catalog->items().size();
+        }
+
         auto item = catalogItem(parent);
-        return item ? item->children().size() : _catalog->items().size();
+        qDebug() << "ROW COUNT 2" << (item ? item->children().size() : 0);
+        return item ? item->children().size() : 0;
     }
 
     int columnCount(const QModelIndex &parent) const override
@@ -61,8 +89,11 @@ public:
 
     bool hasChildren(const QModelIndex &parent) const override
     {
+        if (!parent.isValid())
+            return !_catalog->items().isEmpty();
+
         auto item = catalogItem(parent);
-        return !(item ? item->children().isEmpty() : _catalog->items().isEmpty());
+        return item ? !item->children().isEmpty() : false;
     }
 
     QVariant data(const QModelIndex &index, int role) const override
@@ -71,6 +102,7 @@ public:
             return QVariant();
         if (role == Qt::DisplayRole)
         {
+            return QString("%1;%2 %3").arg(index.row()).arg(index.column()).arg(long(index.internalPointer()));
             auto item = catalogItem(index);
             return item ? item->title() : QVariant();
         }

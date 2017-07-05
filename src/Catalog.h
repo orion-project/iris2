@@ -96,12 +96,11 @@ typedef OperationResult<int> IntResult;
 class CatalogItem
 {
 public:
-    virtual ~CatalogItem();
+    virtual ~CatalogItem() {}
 
     const QString& title() const { return _title; }
     const QString& info() const { return _info; }
     CatalogItem* parent() const { return _parent; }
-    const QList<CatalogItem*>& children() const { return _children; }
 
     bool isFolder() const;
     bool isGlass() const;
@@ -111,7 +110,6 @@ public:
 private:
     QString _title, _info;
     CatalogItem* _parent = nullptr;
-    QList<CatalogItem*> _children;
 
     friend class Catalog;
     friend class FolderManager;
@@ -123,11 +121,16 @@ private:
 class FolderItem : public CatalogItem
 {
 public:
+    ~FolderItem() { qDeleteAll(_children); }
+
     int id() const { return _id; }
+    const QList<CatalogItem*>& children() const { return _children; }
 
 private:
     int _id;
+    QList<CatalogItem*> _children;
 
+    friend class Catalog;
     friend class FolderManager;
 };
 

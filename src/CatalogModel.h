@@ -33,8 +33,11 @@ public:
         auto parentItem = catalogItem(parent);
         if (!parentItem) return QModelIndex();
 
-        if (row < parentItem->children().size())
-            return createIndex(row, column, parentItem->children().at(row));
+        auto parentFolder = parentItem->asFolder();
+        if (!parentFolder) return QModelIndex();
+
+        if (row < parentFolder->children().size())
+            return createIndex(row, column, parentFolder->children().at(row));
 
         return QModelIndex();
     }
@@ -50,7 +53,7 @@ public:
         if (!parentItem) return QModelIndex();
 
         int row = parentItem->parent()
-                ? parentItem->parent()->children().indexOf(parentItem)
+                ? parentItem->parent()->asFolder()->children().indexOf(parentItem)
                 : _catalog->items().indexOf(parentItem);
 
         return createIndex(row, 0, parentItem);
@@ -62,22 +65,13 @@ public:
             return _catalog->items().size();
 
         auto item = catalogItem(parent);
-        return item ? item->children().size() : 0;
+        return item && item->isFolder() ? item->asFolder()->children().size() : 0;
     }
 
     int columnCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
         return 1;
-    }
-
-    bool hasChildren(const QModelIndex &parent) const override
-    {
-        if (!parent.isValid())
-            return !_catalog->items().isEmpty();
-
-        auto item = catalogItem(parent);
-        return item ? !item->children().isEmpty() : false;
     }
 
     QVariant data(const QModelIndex &index, int role) const override

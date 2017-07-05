@@ -11,11 +11,6 @@ Glass* CustomFormula::makeGlass() { return new GlassCustom(this); }
 
 //------------------------------------------------------------------------------
 
-CatalogItem::~CatalogItem()
-{
-    qDeleteAll(_children);
-}
-
 bool CatalogItem::isFolder() const { return dynamic_cast<const FolderItem*>(this); }
 bool CatalogItem::isGlass() const { return dynamic_cast<const GlassItem*>(this); }
 FolderItem* CatalogItem::asFolder() { return dynamic_cast<FolderItem*>(this); }
@@ -145,7 +140,7 @@ QString Catalog::createFolder(FolderItem* parent, const QString& title)
 
 QString Catalog::removeFolder(FolderItem* item)
 {
-    (item->parent() ? item->parent()->_children : _items).removeOne(item);
+    (item->parent() ? item->parent()->asFolder()->_children : _items).removeOne(item);
     delete item;
     // TODO remove from database, return error
     return QString();
@@ -167,7 +162,7 @@ QString Catalog::createGlass(FolderItem* parent, Glass *glass)
         return res;
     }
 
-    (parent ? parent->_children : _items).append(item);
+    (parent ? parent->asFolder()->_children : _items).append(item);
     // TODO sort items after inserting
     return QString();
 }
@@ -187,7 +182,7 @@ QString Catalog::updateGlass(GlassItem* item, Glass *glass)
 
 QString Catalog::removeGlass(GlassItem* item)
 {
-    (item->parent() ? item->parent()->_children : _items).removeOne(item);
+    (item->parent() ? item->parent()->asFolder()->_children : _items).removeOne(item);
     delete item;
     // TODO remove from database, return error
     return QString();

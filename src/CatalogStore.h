@@ -23,7 +23,12 @@ public:
     FolderTableDef* table() const;
 
     QString create(FolderItem* folder) const;
+    QString rename(int folderId, const QString title) const;
+    QString remove(FolderItem* folder) const;
     FoldersResult selectAll() const;
+
+private:
+    QString removeBranch(FolderItem* folder, const QString &path) const;
 };
 
 //------------------------------------------------------------------------------
@@ -41,6 +46,7 @@ public:
     GlassTableDef* table() const;
 
     QString create(GlassItem* item) const;
+    QString remove(GlassItem* item) const;
     GlassesResult selectAll() const;
 };
 
@@ -51,6 +57,9 @@ namespace CatalogStore {
 void closeDatabase();
 QString newDatabase(const QString fileName);
 QString openDatabase(const QString fileName);
+QString beginTran(const QString& operation);
+void commitTran();
+void rollbackTran();
 
 FolderManager* folderManager();
 GlassManager* glassManager();

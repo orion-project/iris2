@@ -22,12 +22,17 @@ public:
     const QString info = "Info";
 
     QString sqlCreate() const override {
-        return "CREATE TABLE IF NOT EXISTS Folder (Id, Parent, Title, Info)";
+        return "CREATE TABLE IF NOT EXISTS Folder ("
+               "Id INTEGER PRIMARY KEY, "
+               "Parent, Title, Info)";
     }
 
     const QString sqlInsert =
         "INSERT INTO Folder (Id, Parent, Title, Info) "
         "VALUES (:Id, :Parent, :Title, :Info)";
+
+    const QString sqlRename = "UPDATE Folder SET Title = :Title WHERE Id = :Id";
+    const QString sqlDelete = "DELETE FROM Folder WHERE Id = :Id";
 };
 
 //------------------------------------------------------------------------------
@@ -47,13 +52,17 @@ public:
     const QString lambdaMax = "LambdaMax";
 
     QString sqlCreate() const override {
-        return "CREATE TABLE IF NOT EXISTS Glass "
-               "(Id, Parent, Title, Info, Comment, Formula, LambdaMin, LambdaMax)";
+        return "CREATE TABLE IF NOT EXISTS Glass ("
+               "Id INTEGER PRIMARY KEY, "
+               "Parent REFERENCES Folder(Id) ON DELETE CASCADE, "
+               "Title, Info, Comment, Formula, LambdaMin, LambdaMax)";
     }
 
     const QString sqlInsert =
         "INSERT INTO Glass (Id, Parent, Title, Info, Comment, Formula, LambdaMin, LambdaMax) "
         "VALUES (:Id, :Parent, :Title, :Info, :Comment, :Formula, :LambdaMin, :LambdaMax)";
+
+    const QString sqlDelete = "DELETE FROM Glass WHERE Id = :Id";
 };
 
 //------------------------------------------------------------------------------
@@ -113,6 +122,46 @@ FoldersResult FolderManager::selectAll() const
     }
 
     return result;
+}
+
+QString FolderManager::rename(int folderId, const QString title) const
+{
+    return ActionQuery(table()->sqlRename)
+            .param(table()->id, folderId)
+            .param(table()->title, title)
+            .exec();
+}
+
+QString FolderManager::remove(FolderItem *folder) const
+{
+    CatalogStore::beginTran(QString("Remove folder #%1").arg(folder->id()));
+    QString res = removeBranch(folder, QString());
+    if (!res.isEmpty())
+    {
+        CatalogStore::rollbackTran();
+        return res;
+    }
+    CatalogStore::commitTran();
+    return QString();
+}
+
+QString FolderManager::removeBranch(FolderItem* folder, const QString& path) const
+{
+    QString thisPath = path + '/' + folder->title();
+
+    for (auto item: folder->children())
+        if (item->isFolder())
+        {
+            QString res = removeBranch(item->asFolder(), thisPath);
+            if (!res.isEmpty()) return res;
+        }
+
+    QString res = ActionQuery(table()->sqlDelete)
+            .param(table()->id, folder->id())
+            .exec();
+    if (!res.isEmpty())
+        return qApp->tr("Failed to delete folder '%1'.\n\n%2").arg(thisPath).arg(res);
+    return QString();
 }
 
 //------------------------------------------------------------------------------
@@ -194,6 +243,13 @@ GlassesResult GlassManager::selectAll() const
     return result;
 }
 
+QString GlassManager::remove(GlassItem* item) const
+{
+    return ActionQuery(table()->sqlDelete)
+            .param(table()->id, item->glass()->id())
+            .exec();
+}
+
 //------------------------------------------------------------------------------
 
 namespace CatalogStore {
@@ -238,19 +294,18 @@ QString openDatabase(const QString fileName)
 
     QSqlQuery query;
     if (!query.exec("PRAGMA foreign_keys = ON;"))
-        return qApp->tr("Failed to enable foreign keys.\n\n%1").arg(SqlHelper::errorText(query));
+        return QString("Failed to enable foreign keys.\n\n%1").arg(SqlHelper::errorText(query));
 
-    if (!__db.transaction())
-        return qApp->tr("Unable to begin transaction to create database structure.\n\n%1")
-                .arg(SqlHelper::errorText(__db.lastError()));
+    QString res = beginTran("Setup database structure");
+    if (!res.isEmpty()) return res;
 
-    QString res = createTable(folderManager()->table());
+    res = createTable(folderManager()->table());
     if (!res.isEmpty()) return res;
 
     res = createTable(glassManager()->table());
     if (!res.isEmpty()) return res;
 
-    __db.commit();
+    commitTran();
 
     return QString();
 }
@@ -260,11 +315,23 @@ QString createTable(TableDef *table)
     auto res = Ori::Sql::ActionQuery(table->sqlCreate()).exec();
     if (!res.isEmpty())
     {
-        __db.rollback();
-        return qApp->tr("Unable to create table '%1'.\n\n%2").arg(table->tableName()).arg(res);
+        rollbackTran();
+        return QString("Unable to create table '%1'.\n\n%2").arg(table->tableName()).arg(res);
     }
     return QString();
 }
+
+QString beginTran(const QString& operation)
+{
+    if (!__db.transaction())
+        return QString("%1: unable to begin transaction.\n\n%1")
+                .arg(operation).arg(SqlHelper::errorText(__db.lastError()));
+    return QString();
+}
+
+void commitTran() { __db.commit(); }
+void rollbackTran() { __db.rollback(); }
+
 
 FolderManager *folderManager() { static FolderManager m; return &m; }
 GlassManager* glassManager() { static GlassManager m; return &m; }

@@ -114,9 +114,12 @@ Catalog::~Catalog()
 
 QString Catalog::renameFolder(FolderItem* item, const QString& title)
 {
+    QString res = CatalogStore::folderManager()->rename(item->id(), title);
+    if (!res.isEmpty()) return res;
+
     item->_title = title;
+
     // TODO sort items after renaming
-    // TODO save to database, return error
     return QString();
 }
 
@@ -140,9 +143,11 @@ QString Catalog::createFolder(FolderItem* parent, const QString& title)
 
 QString Catalog::removeFolder(FolderItem* item)
 {
+    QString res = CatalogStore::folderManager()->remove(item);
+    if (!res.isEmpty()) return res;
+
     (item->parent() ? item->parent()->asFolder()->_children : _items).removeOne(item);
     delete item;
-    // TODO remove from database, return error
     return QString();
 }
 
@@ -182,9 +187,11 @@ QString Catalog::updateGlass(GlassItem* item, Glass *glass)
 
 QString Catalog::removeGlass(GlassItem* item)
 {
+    QString res = CatalogStore::glassManager()->remove(item);
+    if (!res.isEmpty()) return res;
+
     (item->parent() ? item->parent()->asFolder()->_children : _items).removeOne(item);
     delete item;
-    // TODO remove from database, return error
     return QString();
 }
 

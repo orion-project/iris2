@@ -149,11 +149,12 @@ void CatalogWidget::deleteFolder()
                       "This action can't be undone.").arg(selected.folder->title());
     if (!Ori::Dlg::yes(confirm)) return;
 
+    ItemRemoverGuard guard(_catalogModel, selected.index);
+
     auto res = _catalog->removeFolder(selected.folder);
     if (!res.isEmpty()) return Ori::Dlg::error(res);
 
-    auto parentIndex = _catalogModel->itemRemoved(selected.index);
-    _catalogView->setCurrentIndex(parentIndex);
+    _catalogView->setCurrentIndex(guard.parentIndex);
 }
 
 void CatalogWidget::createGlass()
@@ -189,9 +190,10 @@ void CatalogWidget::deleteGlass()
                       "This action can't be undone.").arg(selected.glass->title());
     if (!Ori::Dlg::yes(confirm)) return;
 
+    ItemRemoverGuard guard(_catalogModel, selected.index);
+
     auto res = _catalog->removeGlass(selected.glass);
     if (!res.isEmpty()) return Ori::Dlg::error(res);
 
-    auto parentIndex = _catalogModel->itemRemoved(selected.index);
-    _catalogView->setCurrentIndex(parentIndex);
+    _catalogView->setCurrentIndex(guard.parentIndex);
 }

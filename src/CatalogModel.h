@@ -110,17 +110,32 @@ public:
         return index(row, 0, parent);
     }
 
-    QModelIndex itemRemoved(const QModelIndex &index)
-    {
-        auto parentIndex = parent(index);
-        beginRemoveRows(parentIndex, index.row(), index.row());
-        endRemoveRows();
-        return parentIndex;
-    }
+    friend class ItemRemoverGuard;
 
 private:
     Catalog* _catalog;
     QIcon _iconFolder, _iconGlass;
+};
+
+
+class ItemRemoverGuard
+{
+public:
+    ItemRemoverGuard(CatalogModel* model, const QModelIndex &removingIndex) : _model(model)
+    {
+        parentIndex = _model->parent(removingIndex);
+        _model->beginRemoveRows(parentIndex, removingIndex.row(), removingIndex.row());
+    }
+
+    ~ItemRemoverGuard()
+    {
+        _model->endRemoveRows();
+    }
+
+    QModelIndex parentIndex;
+
+private:
+    CatalogModel* _model;
 };
 
 #endif // CATALOGMODEL_H

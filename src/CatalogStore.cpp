@@ -62,6 +62,11 @@ public:
         "INSERT INTO Glass (Id, Parent, Title, Info, Comment, Formula, LambdaMin, LambdaMax) "
         "VALUES (:Id, :Parent, :Title, :Info, :Comment, :Formula, :LambdaMin, :LambdaMax)";
 
+    const QString sqlUpdate =
+        "UPDATE Glass SET Title = :Title, Info = :Info, Comment = :Comment, "
+            "Formula = :Formula, LambdaMin = :LambdaMin, LambdaMax = :LambdaMax "
+        "WHERE Id = :Id";
+
     const QString sqlDelete = "DELETE FROM Glass WHERE Id = :Id";
 };
 
@@ -241,6 +246,19 @@ GlassesResult GlassManager::selectAll() const
     }
 
     return result;
+}
+
+QString GlassManager::update(Glass* glass, const QString &info) const
+{
+    return ActionQuery(table()->sqlUpdate)
+            .param(table()->id, glass->id())
+            .param(table()->title, glass->title())
+            .param(table()->info, info)
+            .param(table()->comment, glass->comment())
+            .param(table()->lambdaMin, glass->lambdaMin())
+            .param(table()->lambdaMax, glass->lambdaMax())
+            .param(table()->formula, glass->formula()->name())
+            .exec();
 }
 
 QString GlassManager::remove(GlassItem* item) const

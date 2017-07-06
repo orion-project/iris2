@@ -8,6 +8,7 @@ class GlassItem;
 class FolderItem;
 class FolderTableDef;
 class GlassTableDef;
+class Glass;
 
 //------------------------------------------------------------------------------
 
@@ -46,6 +47,7 @@ public:
     GlassTableDef* table() const;
 
     QString create(GlassItem* item) const;
+    QString update(Glass* glass, const QString& info) const;
     QString remove(GlassItem* item) const;
     GlassesResult selectAll() const;
 };

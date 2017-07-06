@@ -19,6 +19,8 @@ public:
 //    virtual double calcIndex1(const double& lambda) const = 0;
 //    virtual double calcIndex2(const double& lambda) const = 0;
 
+    void assign(Glass* g);
+
 protected:
     Glass(DispersionFormula* formula) : _formula(formula) {}
 

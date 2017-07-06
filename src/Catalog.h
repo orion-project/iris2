@@ -177,7 +177,6 @@ public:
     QString createGlass(FolderItem* parent, Glass *glass);
     QString updateGlass(GlassItem* item, Glass* glass);
     QString removeGlass(GlassItem* item);
-    QString loadGlass(GlassItem* item);
 
 private:
     QString _fileName;

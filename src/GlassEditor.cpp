@@ -58,12 +58,8 @@ bool GlassEditor::populate(GlassItem* item)
 {
     if (!item->glass())
     {
-        auto res = _catalog->loadGlass(item);
-        if (!res.isEmpty())
-        {
-            Ori::Dlg::error(res);
-            return false;
-        }
+        qWarning() << "GlassItem has no glass definition";
+        return false;
     }
 
     _glassItem = item;
@@ -96,9 +92,9 @@ void GlassEditor::apply()
 
 QString GlassEditor::save()
 {
-    Glass *glass = _mode == CreateGlass
-            ? formula()->makeGlass()
-            : _glassItem->glass();
+    Glass *glass = formula()->makeGlass();
+    if (_mode == EditGlass)
+        glass->assign(_glassItem->glass());
 
     glass->_title = glassTitle();
     glass->_lambdaMin = lambdaMin();

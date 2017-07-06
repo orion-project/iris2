@@ -174,13 +174,20 @@ QString Catalog::createGlass(FolderItem* parent, Glass *glass)
 
 QString Catalog::updateGlass(GlassItem* item, Glass *glass)
 {
-    // TODO save to database, update objects in internal lists only if no error
-    // TODO copy glass props instead of assigning pointer
+    QString info; // TODO prepage glass info before saving
+    QString res = CatalogStore::glassManager()->update(glass, info);
+    if (!res.isEmpty())
+    {
+        delete glass;
+        return res;
+    }
+
+    delete item->_glass;
     item->_glass = glass;
     item->_formula = glass->formula();
     item->_title = glass->title();
-    // TODO update item info
-    // TODO update item icon
+    item->_info = info;
+
     // TODO sort items after renaming
     return QString();
 }
@@ -192,13 +199,6 @@ QString Catalog::removeGlass(GlassItem* item)
 
     (item->parent() ? item->parent()->asFolder()->_children : _items).removeOne(item);
     delete item;
-    return QString();
-}
-
-QString Catalog::loadGlass(GlassItem* item)
-{
-    //item->_glass = new Glass;
-    // TODO load glass from database
     return QString();
 }
 

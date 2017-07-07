@@ -6,6 +6,7 @@
 QT_BEGIN_NAMESPACE
 class QComboBox;
 class QLineEdit;
+class QTextEdit;
 QT_END_NAMESPACE
 
 class Catalog;
@@ -34,6 +35,7 @@ private:
     QLineEdit *_titleEditor;
     QComboBox *_formulaSelector;
     Ori::Widgets::ValueEdit *_lambdaMinEditor, *_lambdaMaxEditor;
+    QTextEdit* _commentEditor;
 
     DialogMode _mode;
     Catalog *_catalog;
@@ -46,6 +48,7 @@ private:
 
     DispersionFormula* formula() const;
     QString glassTitle() const;
+    QString glassComment() const;
     double lambdaMin() const;
     double lambdaMax() const;
     QString generateInfo() const;

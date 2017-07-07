@@ -112,6 +112,8 @@ public:
 
     friend class ItemRemoverGuard;
 
+    const QIcon& folderIcon() const { return _iconFolder; }
+
 private:
     Catalog* _catalog;
     QIcon _iconFolder, _iconGlass;

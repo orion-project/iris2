@@ -252,6 +252,7 @@ QString GlassManager::load(Glass* glass) const
 
     QSqlRecord r = query.record();
     glass->_title = r.value(table()->title).toString();
+    glass->_comment = r.value(table()->comment).toString();
     glass->_lambdaMin = r.value(table()->lambdaMin).toDouble();
     glass->_lambdaMax = r.value(table()->lambdaMax).toDouble();
     // TODO load formula specific values

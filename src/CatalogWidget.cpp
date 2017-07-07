@@ -96,14 +96,16 @@ void CatalogWidget::contextMenuRequested(const QPoint &pos)
     {
         _rootMenu->popup(_catalogView->mapToGlobal(pos));
     }
-    else if (selected.item->isFolder())
+    else if (selected.folder)
     {
         _folderMenuHeader->setText(selected.item->title());
+        _folderMenuHeader->setIcon(_catalogModel->folderIcon());
         _folderMenu->popup(_catalogView->mapToGlobal(pos));
     }
-    else
+    else if (selected.glass)
     {
         _glassMenuHeader->setText(selected.item->title());
+        _glassMenuHeader->setIcon(selected.glass->formula()->icon());
         _glassMenu->popup(_catalogView->mapToGlobal(pos));
     }
 }

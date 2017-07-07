@@ -49,6 +49,7 @@ public:
     QString create(GlassItem* item) const;
     QString update(Glass* glass, const QString& info) const;
     QString remove(GlassItem* item) const;
+    QString load(Glass* glass) const;
     GlassesResult selectAll() const;
 };
 

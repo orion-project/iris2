@@ -226,18 +226,11 @@ GlassesResult GlassManager::selectAll() const
             continue;
         }
 
-        Glass* glass = dispersionFormulas()[formulaName]->makeGlass();
-        glass->_id = id;
-        glass->_title = title;
-        glass->_comment = r.value(table()->comment).toString();
-        glass->_lambdaMin = r.value(table()->lambdaMin).toDouble();
-        glass->_lambdaMax = r.value(table()->lambdaMax).toDouble();
-
         GlassItem *item = new GlassItem;
-        item->_glass = glass;
-        item->_formula = glass->formula();
-        item->_title = glass->title();
+        item->_id = id;
+        item->_title = title;
         item->_info = r.value(table()->info).toString();
+        item->_formula = dispersionFormulas()[formulaName];
 
         int parentId = r.value(table()->parent).toInt();
         if (!result.items.contains(parentId))
@@ -246,6 +239,23 @@ GlassesResult GlassManager::selectAll() const
     }
 
     return result;
+}
+
+QString GlassManager::load(Glass* glass) const
+{
+    SelectQuery query(table()->sqlSelectById(glass->id()));
+    if (query.isFailed())
+        return qApp->tr("Unable to load material #%1.\n\n%2").arg(glass->id()).arg(query.error());
+
+    if (!query.next())
+        return qApp->tr("Material #%1 does not exist.").arg(glass->id());
+
+    QSqlRecord r = query.record();
+    glass->_title = r.value(table()->title).toString();
+    glass->_lambdaMin = r.value(table()->lambdaMin).toDouble();
+    glass->_lambdaMax = r.value(table()->lambdaMax).toDouble();
+    // TODO load formula specific values
+    return QString();
 }
 
 QString GlassManager::update(Glass* glass, const QString &info) const
@@ -259,6 +269,7 @@ QString GlassManager::update(Glass* glass, const QString &info) const
             .param(table()->lambdaMax, glass->lambdaMax())
             .param(table()->formula, glass->formula()->name())
             .exec();
+    // TODO save formula specific values
 }
 
 QString GlassManager::remove(GlassItem* item) const
@@ -266,6 +277,7 @@ QString GlassManager::remove(GlassItem* item) const
     return ActionQuery(table()->sqlDelete)
             .param(table()->id, item->glass()->id())
             .exec();
+    // TODO remove formula specific values
 }
 
 //------------------------------------------------------------------------------

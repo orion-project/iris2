@@ -58,8 +58,12 @@ bool GlassEditor::populate(GlassItem* item)
 {
     if (!item->glass())
     {
-        qWarning() << "GlassItem has no glass definition";
-        return false;
+        QString res = _catalog->loadGlass(item);
+        if (!res.isEmpty())
+        {
+            Ori::Dlg::error(res);
+            return false;
+        }
     }
 
     _glassItem = item;

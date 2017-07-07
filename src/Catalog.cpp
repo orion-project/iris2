@@ -192,6 +192,20 @@ QString Catalog::updateGlass(GlassItem* item, Glass *glass)
     return QString();
 }
 
+QString Catalog::loadGlass(GlassItem* item)
+{
+    Glass* glass = item->formula()->makeGlass();
+    glass->_id = item->_id;
+    QString res = CatalogStore::glassManager()->load(glass);
+    if (!res.isEmpty())
+    {
+        delete glass;
+        return res;
+    }
+    item->_glass = glass;
+    return QString();
+}
+
 QString Catalog::removeGlass(GlassItem* item)
 {
     QString res = CatalogStore::glassManager()->remove(item);

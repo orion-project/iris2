@@ -98,6 +98,7 @@ class CatalogItem
 public:
     virtual ~CatalogItem() {}
 
+    int id() const { return _id; }
     const QString& title() const { return _title; }
     const QString& info() const { return _info; }
     CatalogItem* parent() const { return _parent; }
@@ -108,6 +109,7 @@ public:
     GlassItem* asGlass();
 
 private:
+    int _id;
     QString _title, _info;
     CatalogItem* _parent = nullptr;
 
@@ -123,11 +125,9 @@ class FolderItem : public CatalogItem
 public:
     ~FolderItem() { qDeleteAll(_children); }
 
-    int id() const { return _id; }
     const QList<CatalogItem*>& children() const { return _children; }
 
 private:
-    int _id;
     QList<CatalogItem*> _children;
 
     friend class Catalog;
@@ -177,6 +177,7 @@ public:
     QString createGlass(FolderItem* parent, Glass *glass);
     QString updateGlass(GlassItem* item, Glass* glass);
     QString removeGlass(GlassItem* item);
+    QString loadGlass(GlassItem* item);
 
 private:
     QString _fileName;

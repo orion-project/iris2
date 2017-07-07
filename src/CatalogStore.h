@@ -51,6 +51,7 @@ public:
     QString remove(GlassItem* item) const;
     QString load(Glass* glass) const;
     GlassesResult selectAll() const;
+    QString countAll(int* count) const;
 };
 
 //------------------------------------------------------------------------------

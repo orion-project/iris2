@@ -281,6 +281,16 @@ QString GlassManager::remove(GlassItem* item) const
     // TODO remove formula specific values
 }
 
+QString GlassManager::countAll(int *count) const
+{
+    SelectQuery query(table()->sqlCountAll());
+    if (query.isFailed()) return query.error();
+
+    query.next();
+    *count = query.record().value(0).toInt();
+    return QString();
+}
+
 //------------------------------------------------------------------------------
 
 namespace CatalogStore {

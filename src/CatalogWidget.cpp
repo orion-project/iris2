@@ -170,6 +170,7 @@ void CatalogWidget::createGlass()
     if (!_catalogView->isExpanded(selected.index))
         _catalogView->expand(selected.index);
     _catalogView->setCurrentIndex(newIndex);
+    // TODO update counter in status bar
 }
 
 void CatalogWidget::editGlass()
@@ -198,4 +199,5 @@ void CatalogWidget::deleteGlass()
     if (!res.isEmpty()) return Ori::Dlg::error(res);
 
     _catalogView->setCurrentIndex(guard.parentIndex);
+    // TODO update counter in status bar
 }

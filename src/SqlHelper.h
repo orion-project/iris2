@@ -90,6 +90,10 @@ public:
         return QString("SELECT * FROM %1").arg(_tableName);
     }
 
+    virtual QString sqlCountAll() {
+        return QString("SELECT COUNT(Id) FROM %1").arg(_tableName);
+    }
+
     virtual QString sqlSelectById(int id) const {
         return QString("SELECT * FROM %1 WHERE Id = %2").arg(_tableName).arg(id);
     }

@@ -8,6 +8,7 @@
 #include "tools/OriSettings.h"
 #include "tools/OriWaitCursor.h"
 #include "widgets/OriMruMenu.h"
+#include "widgets/OriStylesMenu.h"
 
 #include <QDockWidget>
 #include <QFileDialog>
@@ -16,6 +17,7 @@
 #include <QMdiArea>
 #include <QMenuBar>
 #include <QStatusBar>
+#include <QStyle>
 
 MainWindow::MainWindow() : QMainWindow()
 {
@@ -53,6 +55,9 @@ void MainWindow::createMenu()
     menuFile->addSeparator();
     auto actionExit = menuFile->addAction(tr("Exit"), this, &MainWindow::close, QKeySequence::Quit);
     new Ori::Widgets::MruMenuPart(_mruList, menuFile, actionExit, this);
+
+    QMenu* menuView = menuBar()->addMenu(tr("&View"));
+    menuView->addMenu(new Ori::Widgets::StylesMenu(this));
 }
 
 void MainWindow::createDocks()
@@ -86,6 +91,7 @@ void MainWindow::saveSettings()
     Ori::Settings s;
     s.storeWindowGeometry(this);
     s.storeDockState(this);
+    s.setValue("style", qApp->style()->objectName());
 }
 
 void MainWindow::loadSettings()
@@ -96,6 +102,7 @@ void MainWindow::loadSettings()
     s.restoreWindowGeometry(this);
     s.restoreDockState(this);
     _mruList->load(s.settings());
+    qApp->setStyle(s.strValue("style"));
 }
 
 void MainWindow::newCatalog()

@@ -218,6 +218,7 @@ QString Catalog::removeGlass(GlassItem* item)
 
 IntResult Catalog::countGlasses() const
 {
-    // TODO count glasses
-    return IntResult::ok(42);
+    int count;
+    QString res = CatalogStore::glassManager()->countAll(&count);
+    return res.isEmpty() ? IntResult::ok(count) : IntResult::fail(res);
 }

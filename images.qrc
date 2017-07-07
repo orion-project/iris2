@@ -7,6 +7,7 @@
         <file alias="glass_red">./img/icon/glass_red.svg</file>
         <file alias="folder_opend">./img/icon/folder_opened.svg</file>
         <file alias="folder_closed">./img/icon/folder_closed.svg</file>
+        <file alias="comment">./img/icon/sticky_note.svg</file>
     </qresource>
 </RCC>
 

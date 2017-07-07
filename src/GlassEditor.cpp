@@ -9,32 +9,38 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QDebug>
-#include <QDialogButtonBox>
 #include <QFormLayout>
-#include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
-#include <QTabWidget>
 #include <QTextEdit>
 
 bool GlassEditor::createGlass(Catalog* catalog, FolderItem* parent)
 {
     GlassEditor editor(CreateGlass, catalog);
     editor._parentFolder = parent;
-    return editor.exec() == QDialog::Accepted;
+    return editor.run();
 }
 
 bool GlassEditor::editGlass(Catalog *catalog, GlassItem* item)
 {
     GlassEditor editor(EditGlass, catalog);
     if (!editor.populate(item)) return false;
-    return editor.exec() == QDialog::Accepted;
+    return editor.run();
 }
 
-GlassEditor::GlassEditor(DialogMode mode, Catalog *catalog) : QDialog(qApp->activeWindow()), _mode(mode), _catalog(catalog)
+GlassEditor::GlassEditor(DialogMode mode, Catalog *catalog) :
+    Ori::Dlg::BasicConfigDialog(qApp->activeWindow()), _mode(mode), _catalog(catalog)
 {
     setWindowTitle(tr("Material Properties"));
-    setWindowIcon(QIcon(":/icon/glass"));
+    setWindowIcon(QIcon(":/icon/main"));
+    setObjectName("GlassEditor");
+
+    createPages({createGeneralPage(), createCommentPage()});
+}
+
+QWidget* GlassEditor::createGeneralPage()
+{
+    auto page = new Ori::Dlg::BasicConfigPage(tr("General"), ":/icon/glass_blue");
 
     _titleEditor = new QLineEdit;
 
@@ -50,22 +56,24 @@ GlassEditor::GlassEditor(DialogMode mode, Catalog *catalog) : QDialog(qApp->acti
     layout->addRow(new QLabel(tr("Min wavelength, <b>μm</b>")), _lambdaMinEditor);
     layout->addRow(new QLabel(tr("Max wavelength, <b>μm</b>")), _lambdaMaxEditor);
 
-    auto buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-    qApp->connect(buttons, &QDialogButtonBox::accepted, this, &GlassEditor::apply);
-    qApp->connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
-
-    _commentEditor = new QTextEdit;
-    _commentEditor->setAcceptRichText(false);
-
     Ori::Gui::adjustFont(_titleEditor);
     Ori::Gui::adjustFont(_lambdaMinEditor);
     Ori::Gui::adjustFont(_lambdaMaxEditor);
+
+    page->add({layout});
+    return page;
+}
+
+QWidget* GlassEditor::createCommentPage()
+{
+    auto page = new Ori::Dlg::BasicConfigPage(tr("Comment"), ":/icon/comment");
+
+    _commentEditor = new QTextEdit;
+    _commentEditor->setAcceptRichText(false);
     Ori::Gui::adjustFont(_commentEditor);
 
-    QTabWidget* tabs = new QTabWidget;
-    tabs->addTab(_commentEditor, tr("Comment"));
-
-    Ori::Layouts::LayoutV({layout, tabs, buttons}).useFor(this);
+    page->add({_commentEditor});
+    return page;
 }
 
 bool GlassEditor::populate(GlassItem* item)
@@ -98,20 +106,14 @@ bool GlassEditor::populate(GlassItem* item)
     return true;
 }
 
-void GlassEditor::apply()
+bool GlassEditor::collect()
 {
     if (glassTitle().isEmpty())
-        return Ori::Dlg::warning(tr("Material name can not be empty."));
+    {
+        Ori::Dlg::warning(tr("Material name can not be empty."));
+        return false;
+    }
 
-    auto res = save();
-    if (!res.isEmpty())
-        return Ori::Dlg::error(res);
-
-    accept();
-}
-
-QString GlassEditor::save()
-{
     Glass *glass = formula()->makeGlass();
     if (_mode == EditGlass)
         glass->assign(_glassItem->glass());
@@ -121,9 +123,17 @@ QString GlassEditor::save()
     glass->_lambdaMax = lambdaMax();
     glass->_comment = glassComment();
 
-    return _mode == CreateGlass
+    auto res = _mode == CreateGlass
             ? _catalog->createGlass(_parentFolder, glass)
             : _catalog->updateGlass(_glassItem, glass);
+
+    if (!res.isEmpty())
+    {
+        Ori::Dlg::error(res);
+        return false;
+    }
+
+    return true;
 }
 
 QString GlassEditor::glassTitle() const { return _titleEditor->text().trimmed(); }

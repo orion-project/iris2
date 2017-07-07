@@ -1,7 +1,7 @@
 #ifndef GLASSEDITOR_H
 #define GLASSEDITOR_H
 
-#include <QDialog>
+#include "dialogs/OriBasicConfigDlg.h"
 
 QT_BEGIN_NAMESPACE
 class QComboBox;
@@ -19,7 +19,7 @@ namespace Widgets {
 class ValueEdit;
 }}
 
-class GlassEditor : public QDialog
+class GlassEditor : public Ori::Dlg::BasicConfigDialog
 {
     Q_OBJECT
 
@@ -43,15 +43,16 @@ private:
     FolderItem *_parentFolder;
 
     bool populate(GlassItem* item);
-    void apply();
-    QString save();
+    bool collect() override;
 
     DispersionFormula* formula() const;
     QString glassTitle() const;
     QString glassComment() const;
     double lambdaMin() const;
     double lambdaMax() const;
-    QString generateInfo() const;
+
+    QWidget* createGeneralPage();
+    QWidget* createCommentPage();
 };
 
 #endif // GLASSEDITOR_H

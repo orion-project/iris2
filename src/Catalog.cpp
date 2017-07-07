@@ -169,6 +169,9 @@ QString Catalog::createGlass(FolderItem* parent, Glass *glass)
 
     (parent ? parent->asFolder()->_children : _items).append(item);
     // TODO sort items after inserting
+
+    emit glassCreated(item);
+
     return QString();
 }
 
@@ -212,6 +215,9 @@ QString Catalog::removeGlass(GlassItem* item)
     if (!res.isEmpty()) return res;
 
     (item->parent() ? item->parent()->asFolder()->_children : _items).removeOne(item);
+
+    emit glassRemoved(item);
+
     delete item;
     return QString();
 }

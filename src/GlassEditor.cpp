@@ -60,6 +60,8 @@ QWidget* GlassEditor::createGeneralPage()
     Ori::Gui::adjustFont(_lambdaMinEditor);
     Ori::Gui::adjustFont(_lambdaMaxEditor);
 
+    _titleEditor->setFocus();
+
     page->add({layout});
     return page;
 }
@@ -71,6 +73,8 @@ QWidget* GlassEditor::createCommentPage()
     _commentEditor = new QTextEdit;
     _commentEditor->setAcceptRichText(false);
     Ori::Gui::adjustFont(_commentEditor);
+
+    _commentEditor->setFocus();
 
     page->add({_commentEditor});
     return page;

@@ -126,6 +126,9 @@ void MainWindow::newCatalog()
 
 void MainWindow::openCatalog(const QString &fileName)
 {
+    if (_catalog && QFileInfo(_catalog->fileName()) == QFileInfo(fileName))
+        return;
+
     Ori::WaitCursor c;
 
     catalogClosed();
@@ -150,6 +153,8 @@ void MainWindow::openCatalogViaDialog()
 void MainWindow::catalogOpened(Catalog* catalog)
 {
     _catalog = catalog;
+    connect(_catalog, &Catalog::glassCreated, [this](){ this->updateCounter(); });
+    connect(_catalog, &Catalog::glassRemoved, [this](){ this->updateCounter(); });
     _catalogView->setCatalog(_catalog);
     auto filePath = _catalog->fileName();
     auto fileName = QFileInfo(filePath).fileName();

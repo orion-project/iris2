@@ -179,6 +179,10 @@ public:
     QString removeGlass(GlassItem* item);
     QString loadGlass(GlassItem* item);
 
+signals:
+    void glassCreated(GlassItem*);
+    void glassRemoved(GlassItem*);
+
 private:
     QString _fileName;
     QList<CatalogItem*> _items;

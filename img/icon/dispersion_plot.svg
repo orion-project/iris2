@@ -1,0 +1,36 @@
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<linearGradient id="e" y2="492.04" gradientUnits="userSpaceOnUse" x2="264.75" gradientTransform="matrix(.98170 0 0 .94350 -1024.3 -524.25)" y1="21.741" x1="257.57">
+<stop stop-color="#fc5653" offset="0"/>
+<stop stop-color="#e4d153" offset=".25"/>
+<stop stop-color="#80f167" offset=".5"/>
+<stop stop-color="#53d0d8" offset=".75"/>
+<stop stop-color="#7e60f6" offset="1"/>
+</linearGradient>
+<linearGradient id="c" y2="22.5" xlink:href="#d" gradientUnits="userSpaceOnUse" x2="24.5" gradientTransform="translate(0,-1)" y1="22.5" x1="-.5"/>
+<linearGradient id="d">
+<stop stop-color="#305080" offset="0"/>
+<stop stop-color="#5b79a4" offset="1"/>
+</linearGradient>
+<linearGradient id="a" y2="21.5" xlink:href="#d" gradientUnits="userSpaceOnUse" x2="19.5" y1="21.5" x1="22.41"/>
+<linearGradient id="b" y2="24" xlink:href="#f" gradientUnits="userSpaceOnUse" x2="20" y1="19" x1="20"/>
+<linearGradient id="f">
+<stop stop-color="#5080e0" offset="0"/>
+<stop stop-color="#4058a0" offset="1"/>
+</linearGradient>
+</defs>
+<g transform="translate(0 -540.36)">
+<rect transform="matrix(0,-1,-1,0,0,0)" ry="0" height="458.43" width="459.14" y="-512" x="-999.51" fill="url(#e)"/>
+<rect fill-opacity=".48684" ry="0" height="458.43" width="459.14" y="540.36" x="52.857" fill="#fff"/>
+<path d="m135.25 500.78c32.068 221.94 129.66 382.27 436.53 420.25" stroke="#fff" stroke-linecap="round" stroke-width="100" fill="none"/>
+<path d="m135.25 500.78c32.068 221.94 129.66 382.27 436.53 420.25" stroke="#f00" stroke-linecap="round" stroke-width="25" fill="none"/>
+<g stroke-width="1.0007px" transform="matrix(21.417 0 0 21.417 .093030 538.26)">
+<path d="m0 21.5h23" stroke="url(#c)" fill="none"/>
+<path d="m20 19.5 3 2-3 2" fill-rule="evenodd" stroke="url(#b)" stroke-linecap="round" fill="url(#a)"/>
+</g>
+<g stroke-width="1.0007px" transform="matrix(0 -21.417 21.417 0 -406.83 1052.3)">
+<path d="m0 21.5h23" stroke="url(#c)" fill="none"/>
+<path d="m20 19.5 3 2-3 2" fill-rule="evenodd" stroke="url(#b)" stroke-linecap="round" fill="url(#a)"/>
+</g>
+</g>
+</svg>

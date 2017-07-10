@@ -2,7 +2,9 @@
 #include "Catalog.h"
 #include "CatalogWidget.h"
 #include "InfoWidget.h"
+#include "DispersionPlot.h"
 #include "helpers/OriDialogs.h"
+#include "helpers/OriLayouts.h"
 #include "helpers/OriWindows.h"
 #include "tools/OriMruList.h"
 #include "tools/OriSettings.h"
@@ -13,8 +15,10 @@
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QIcon>
 #include <QLabel>
 #include <QMdiArea>
+#include <QMdiSubWindow>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QStyle>
@@ -58,6 +62,9 @@ void MainWindow::createMenu()
 
     QMenu* menuView = menuBar()->addMenu(tr("&View"));
     menuView->addMenu(new Ori::Widgets::StylesMenu(this));
+
+    QMenu* menuMaterial = menuBar()->addMenu(tr("&Material"));
+    menuMaterial->addAction(QIcon(":/icon/plot"), tr("Dispersion Plot"), this, &MainWindow::makeDispersionPlot);
 }
 
 void MainWindow::createDocks()
@@ -187,4 +194,16 @@ void MainWindow::updateCounter()
         _statusGlassCount->setToolTip(res.error());
         _statusGlassCount->setText(tr("Materials: ERROR"));
     }
+}
+
+void MainWindow::makeDispersionPlot()
+{
+    if (!_catalog) return;
+    auto selection = _catalogView->selection();
+    if (!selection.glass) return;
+    auto plotWindow = new DispersionPlot;
+    plotWindow->addGlass(selection.glass);
+    auto mdiChild = _mdiArea->addSubWindow(plotWindow);
+    mdiChild->setWindowIcon(plotWindow->windowIcon());
+    mdiChild->show();
 }

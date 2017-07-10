@@ -1,0 +1,51 @@
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="512" width="512" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.99998 512.00001" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<linearGradient id="f" y2="36.916" gradientUnits="userSpaceOnUse" x2="32.202" gradientTransform="matrix(.50813 0 0 .51590 -1.5738 793.62)" y1="447.71" x1="430.21">
+<stop stop-color="#ff0079" stop-opacity=".79058" offset="0"/>
+<stop stop-color="#fff" stop-opacity=".77487" offset="1"/>
+</linearGradient>
+<linearGradient id="e" y2="577.47" gradientUnits="userSpaceOnUse" x2="58.591" gradientTransform="matrix(.482 0 0 .482 4.608 540.52)" y1="1009.8" x1="470.2">
+<stop stop-color="#d70065" offset="0"/>
+<stop stop-color="#ff8cc2" offset="1"/>
+</linearGradient>
+<linearGradient id="c" y2="36.916" gradientUnits="userSpaceOnUse" x2="32.202" gradientTransform="matrix(.50813 0 0 .51590 -1.5738 537.62)" y1="447.71" x1="430.21">
+<stop stop-color="#09f" stop-opacity=".79058" offset="0"/>
+<stop stop-color="#fff" stop-opacity=".77487" offset="1"/>
+</linearGradient>
+<linearGradient id="d" y2="577.47" gradientUnits="userSpaceOnUse" x2="58.591" gradientTransform="matrix(0.482 0 0 0.482 4.608 284.52)" y1="1009.8" x1="470.2">
+<stop stop-color="#0081d7" offset="0"/>
+<stop stop-color="#8ccfff" offset="1"/>
+</linearGradient>
+<linearGradient id="g" y2="36.916" gradientUnits="userSpaceOnUse" x2="32.202" gradientTransform="matrix(.50813 0 0 .51590 254.43 793.62)" y1="447.71" x1="430.21">
+<stop stop-color="#8a00ff" stop-opacity=".79058" offset="0"/>
+<stop stop-color="#fff" stop-opacity=".77487" offset="1"/>
+</linearGradient>
+<linearGradient id="h" y2="577.47" gradientUnits="userSpaceOnUse" x2="58.591" gradientTransform="matrix(0.482 0 0 0.482 260.61 540.52)" y1="1009.8" x1="470.2">
+<stop stop-color="#7600d7" offset="0"/>
+<stop stop-color="#ca8cff" offset="1"/>
+</linearGradient>
+<linearGradient id="j" y2="36.916" gradientUnits="userSpaceOnUse" x2="32.202" gradientTransform="matrix(.50813 0 0 .51590 254.43 537.62)" y1="447.71" x1="430.21">
+<stop stop-color="#52d811" stop-opacity=".79058" offset="0"/>
+<stop stop-color="#fff" stop-opacity=".77487" offset="1"/>
+</linearGradient>
+<linearGradient id="i" y2="577.47" gradientUnits="userSpaceOnUse" x2="58.591" gradientTransform="matrix(0.482 0 0 0.482 260.61 284.52)" y1="1009.8" x1="470.2">
+<stop stop-color="#4dc611" offset="0"/>
+<stop stop-color="#94f665" offset="1"/>
+</linearGradient>
+</defs>
+<g transform="translate(0 -540.36)">
+<path stroke-linejoin="round" d="m42.508 803.86h170.98l35.008 35.008v170.98l-35.008 35.008h-170.98l-35.008-35.008v-170.98z" stroke="url(#e)" stroke-linecap="round" stroke-width="15" fill="url(#f)"/>
+<g id="a">
+<path d="m210.3 809.51-48.145 37.754v143.74l47.798 48.491 32.212-32.212 0.34637-165.91z" fill-opacity=".25571" fill="#fff"/>
+<path d="m13.561 842.76 148.24 4.5027 81.742-4.1564-32.212-32.212-165.91-0.34637z" fill-opacity=".25571" fill="#fff"/>
+<path d="m45.981 809.51 0.34636 229.99-32.212-32.212-0.34636-165.91z" fill-opacity=".25571" fill="#fff"/>
+<path d="m12.869 1006.9 149.63-15.24 80.356 14.894-32.212 32.212-165.91 0.3464z" fill-opacity=".25571" fill="#fff"/>
+</g>
+<path stroke-linejoin="round" d="m42.508 547.86h170.98l35.008 35.008v170.98l-35.008 35.008h-170.98l-35.008-35.008v-170.98z" stroke="url(#d)" stroke-linecap="round" stroke-width="15" fill="url(#c)"/>
+<use xlink:href="#a" transform="translate(0,-256)" height="100%" width="100%" y="0" x="0"/>
+<path stroke-linejoin="round" d="m298.51 803.86h170.98l35.008 35.008v170.98l-35.008 35.008h-170.98l-35.008-35.008v-170.98z" stroke="url(#h)" stroke-linecap="round" stroke-width="15" fill="url(#g)"/>
+<use id="b" xlink:href="#a" transform="translate(256)" height="100%" width="100%" y="0" x="0"/>
+<path stroke-linejoin="round" d="m298.51 547.86h170.98l35.008 35.008v170.98l-35.008 35.008h-170.98l-35.008-35.008v-170.98z" stroke="url(#i)" stroke-linecap="round" stroke-width="15" fill="url(#j)"/>
+<use xlink:href="#b" transform="translate(0,-256)" height="100%" width="100%" y="0" x="0"/>
+</g>
+</svg>

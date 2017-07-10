@@ -15,6 +15,11 @@ class CatalogModel;
 class FolderItem;
 class GlassItem;
 
+struct SelectedItems
+{
+    GlassItem* glass;
+};
+
 class CatalogWidget : public QWidget
 {
     Q_OBJECT
@@ -23,6 +28,8 @@ public:
     CatalogWidget();
 
     void setCatalog(Catalog* catalog);
+
+    SelectedItems selection() const;
 
 private:
     Catalog* _catalog;
@@ -41,6 +48,8 @@ private:
     void createGlass();
     void editGlass();
     void deleteGlass();
+    void plotGlass();
+    void addGlassToPlot();
 };
 
 #endif // CATALOGWIDGET_H

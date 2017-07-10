@@ -46,9 +46,10 @@ CatalogWidget::CatalogWidget() : QWidget()
 
     _glassMenu = new QMenu(this);
     _glassMenuHeader = makeHeaderItem(_glassMenu);
+    _glassMenu->addAction(tr("Dispersion Plot"), this, &CatalogWidget::plotGlass);
+    _glassMenu->addAction(tr("Append to Active Plot"), this, &CatalogWidget::addGlassToPlot);
     _glassMenu->addSeparator();
     _glassMenu->addAction(tr("Edit Material..."), this, &CatalogWidget::editGlass);
-    _glassMenu->addSeparator();
     _glassMenu->addAction(tr("Delete Material"), this, &CatalogWidget::deleteGlass);
 
     _catalogView = new QTreeView;
@@ -108,6 +109,14 @@ void CatalogWidget::contextMenuRequested(const QPoint &pos)
         _glassMenuHeader->setIcon(selected.glass->formula()->icon());
         _glassMenu->popup(_catalogView->mapToGlobal(pos));
     }
+}
+
+SelectedItems CatalogWidget::selection() const
+{
+    CatalogSelection selected(_catalogView);
+    SelectedItems result;
+    result.glass = selected.glass;
+    return result;
 }
 
 void CatalogWidget::createFolder()
@@ -198,4 +207,14 @@ void CatalogWidget::deleteGlass()
     if (!res.isEmpty()) return Ori::Dlg::error(res);
 
     _catalogView->setCurrentIndex(guard.parentIndex);
+}
+
+void CatalogWidget::plotGlass()
+{
+
+}
+
+void CatalogWidget::addGlassToPlot()
+{
+
 }

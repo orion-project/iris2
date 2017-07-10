@@ -44,6 +44,7 @@ private:
     void catalogOpened(Catalog* catalog);
     void catalogClosed();
     void updateCounter();
+    void makeDispersionPlot();
 };
 
 #endif // MAINWINDOW_H

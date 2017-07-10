@@ -25,11 +25,14 @@ class CatalogWidget : public QWidget
     Q_OBJECT
 
 public:
-    CatalogWidget();
+    CatalogWidget(QAction *actionMakeDispPlot, QAction *actionAddToActivePlot);
 
     void setCatalog(Catalog* catalog);
 
     SelectedItems selection() const;
+
+signals:
+    void contextMenuAboutToShow();
 
 private:
     Catalog* _catalog;
@@ -48,8 +51,6 @@ private:
     void createGlass();
     void editGlass();
     void deleteGlass();
-    void plotGlass();
-    void addGlassToPlot();
 };
 
 #endif // CATALOGWIDGET_H

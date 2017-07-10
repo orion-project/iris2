@@ -29,7 +29,7 @@ struct CatalogSelection
 };
 
 
-CatalogWidget::CatalogWidget() : QWidget()
+CatalogWidget::CatalogWidget(QAction* actionMakeDispPlot, QAction* actionAddToActivePlot) : QWidget()
 {
     _rootMenu = new QMenu(this);
     _rootMenu->addAction(tr("New Folder..."), this, &CatalogWidget::createFolder);
@@ -46,11 +46,13 @@ CatalogWidget::CatalogWidget() : QWidget()
 
     _glassMenu = new QMenu(this);
     _glassMenuHeader = makeHeaderItem(_glassMenu);
-    _glassMenu->addAction(tr("Dispersion Plot"), this, &CatalogWidget::plotGlass);
-    _glassMenu->addAction(tr("Append to Active Plot"), this, &CatalogWidget::addGlassToPlot);
+    _glassMenu->addSeparator();
+    _glassMenu->addAction(actionMakeDispPlot);
+    _glassMenu->addAction(actionAddToActivePlot);
     _glassMenu->addSeparator();
     _glassMenu->addAction(tr("Edit Material..."), this, &CatalogWidget::editGlass);
     _glassMenu->addAction(tr("Delete Material"), this, &CatalogWidget::deleteGlass);
+    connect(_glassMenu, &QMenu::aboutToShow, [this](){ emit this->contextMenuAboutToShow(); });
 
     _catalogView = new QTreeView;
     _catalogView->setHeaderHidden(true);
@@ -207,14 +209,4 @@ void CatalogWidget::deleteGlass()
     if (!res.isEmpty()) return Ori::Dlg::error(res);
 
     _catalogView->setCurrentIndex(guard.parentIndex);
-}
-
-void CatalogWidget::plotGlass()
-{
-
-}
-
-void CatalogWidget::addGlassToPlot()
-{
-
 }

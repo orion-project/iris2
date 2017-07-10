@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
+class QAction;
 class QLabel;
 class QMdiArea;
 QT_END_NAMESPACE
@@ -11,6 +12,7 @@ QT_END_NAMESPACE
 class Catalog;
 class CatalogWidget;
 class InfoWidget;
+class PlotWindow;
 
 namespace Ori {
 class MruFileList;
@@ -31,6 +33,7 @@ private:
     QMdiArea* _mdiArea;
     Ori::MruFileList *_mruList;
     QLabel *_statusGlassCount, *_statusFileName;
+    QAction *_actionMakeDispPlot, *_actionAddToActivePlot;
 
     void createMenu();
     void createDocks();
@@ -44,7 +47,11 @@ private:
     void catalogOpened(Catalog* catalog);
     void catalogClosed();
     void updateCounter();
+    void updateMenuMaterial();
     void makeDispersionPlot();
+    void addToActivePlot();
+
+    PlotWindow* activePlot() const;
 };
 
 #endif // MAINWINDOW_H

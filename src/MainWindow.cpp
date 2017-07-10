@@ -28,13 +28,16 @@ MainWindow::MainWindow() : QMainWindow()
     setObjectName("mainWindow");
     Ori::Wnd::setWindowIcon(this, ":/icon/main");
 
-    _catalogView = new CatalogWidget;
-    _infoView = new InfoWidget;
-
     _mruList = new Ori::MruFileList(this);
     connect(_mruList, &Ori::MruFileList::clicked, this, &MainWindow::openCatalog);
 
     createMenu();
+
+    _catalogView = new CatalogWidget(_actionMakeDispPlot, _actionAddToActivePlot);
+    connect(_catalogView, &CatalogWidget::contextMenuAboutToShow, this, &MainWindow::updateMenuMaterial);
+
+    _infoView = new InfoWidget;
+
     createDocks();
     createStatusBar();
 
@@ -64,7 +67,9 @@ void MainWindow::createMenu()
     menuView->addMenu(new Ori::Widgets::StylesMenu(this));
 
     QMenu* menuMaterial = menuBar()->addMenu(tr("&Material"));
-    menuMaterial->addAction(QIcon(":/icon/plot"), tr("Dispersion Plot"), this, &MainWindow::makeDispersionPlot);
+    connect(menuMaterial, &QMenu::aboutToShow, this, &MainWindow::updateMenuMaterial);
+    _actionMakeDispPlot = menuMaterial->addAction(QIcon(":/icon/plot"), tr("Dispersion Plot"), this, &MainWindow::makeDispersionPlot);
+    _actionAddToActivePlot = menuMaterial->addAction(tr("Add to Active Plot"), this, &MainWindow::addToActivePlot);
 }
 
 void MainWindow::createDocks()
@@ -93,8 +98,6 @@ void MainWindow::createStatusBar()
 
 void MainWindow::saveSettings()
 {
-    // TODO save dock configuration
-
     Ori::Settings s;
     s.storeWindowGeometry(this);
     s.storeDockState(this);
@@ -103,8 +106,6 @@ void MainWindow::saveSettings()
 
 void MainWindow::loadSettings()
 {
-    // TODO load dock configuration
-
     Ori::Settings s;
     s.restoreWindowGeometry(this);
     s.restoreDockState(this);
@@ -196,14 +197,48 @@ void MainWindow::updateCounter()
     }
 }
 
+void MainWindow::updateMenuMaterial()
+{
+    bool canMakeDispPlot = false;
+    bool canAddToActivePlot = false;
+
+    if (_catalog)
+    {
+        auto selected = _catalogView->selection();
+        bool hasSelection = selected.glass;
+
+        canMakeDispPlot = hasSelection;
+        canAddToActivePlot = hasSelection && activePlot();
+    }
+
+    _actionMakeDispPlot->setEnabled(canMakeDispPlot);
+    _actionAddToActivePlot->setEnabled(canAddToActivePlot);
+}
+
+PlotWindow* MainWindow::activePlot() const
+{
+    auto mdiChild = _mdiArea->currentSubWindow();
+    if (!mdiChild) return nullptr;
+    return dynamic_cast<PlotWindow*>(mdiChild->widget());
+}
+
 void MainWindow::makeDispersionPlot()
 {
-    if (!_catalog) return;
-    auto selection = _catalogView->selection();
-    if (!selection.glass) return;
-    auto plotWindow = new DispersionPlot;
-    plotWindow->addGlass(selection.glass);
+    auto selected = _catalogView->selection();
+    if (!selected.glass) return;
+    auto plotWindow = new DispersionPlot(_catalog);
+    plotWindow->addGlass(selected.glass);
     auto mdiChild = _mdiArea->addSubWindow(plotWindow);
     mdiChild->setWindowIcon(plotWindow->windowIcon());
     mdiChild->show();
 }
+
+void MainWindow::addToActivePlot()
+{
+    auto selected = _catalogView->selection();
+    if (!selected.glass) return;
+    auto plotWindow = activePlot();
+    if (!plotWindow) return;
+    plotWindow->addGlass(selected.glass);
+}
+

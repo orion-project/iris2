@@ -1,0 +1,7 @@
+https://github.com/uwerat/qwt-mml-dev
+
+git rev-parse HEAD
+7b3c9f77d8740ee6c7158605addc1b22fc599a46
+
+git log --pretty=format:'Hash: %H | Date: %ai | Author: %an (%ae)' -n 1
+Hash: 7b3c9f77d8740ee6c7158605addc1b22fc599a46 | Date: 2016-06-15 11:01:15 +1200 | Author: Alan Garny (agarny@hellix.com)

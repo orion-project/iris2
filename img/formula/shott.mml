@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+ <semantics>
+  <mrow>
+   <mi>n</mi>
+   <mrow>
+    <mrow>
+     <mo fence="true" stretchy="false">(</mo>
+     <mrow>
+      <mi mathvariant="normal">λ</mi>
+     </mrow>
+     <mo fence="true" stretchy="false">)</mo>
+    </mrow>
+    <mo stretchy="false">=</mo>
+    <msqrt>
+     <mrow>
+      <mrow>
+       <msub>
+        <mi>c</mi>
+        <mn>1</mn>
+       </msub>
+       <mo stretchy="false">+</mo>
+       <msub>
+        <mi>c</mi>
+        <mn>2</mn>
+       </msub>
+      </mrow>
+      <mrow>
+       <msup>
+        <mi mathvariant="normal">λ</mi>
+        <mn>2</mn>
+       </msup>
+       <mo stretchy="false">+</mo>
+       <mfrac>
+        <msub>
+         <mi>c</mi>
+         <mn>3</mn>
+        </msub>
+        <msup>
+         <mi mathvariant="normal">λ</mi>
+         <mn>2</mn>
+        </msup>
+       </mfrac>
+       <mo stretchy="false">+</mo>
+       <mfrac>
+        <msub>
+         <mi>c</mi>
+         <mn>4</mn>
+        </msub>
+        <msup>
+         <mi mathvariant="normal">λ</mi>
+         <mn>4</mn>
+        </msup>
+       </mfrac>
+       <mo stretchy="false">+</mo>
+       <mfrac>
+        <msub>
+         <mi>c</mi>
+         <mn>4</mn>
+        </msub>
+        <msup>
+         <mi mathvariant="normal">λ</mi>
+         <mn>6</mn>
+        </msup>
+       </mfrac>
+       <mo stretchy="false">+</mo>
+       <mfrac>
+        <msub>
+         <mi>c</mi>
+         <mn>5</mn>
+        </msub>
+        <msup>
+         <mi mathvariant="normal">λ</mi>
+         <mn>8</mn>
+        </msup>
+       </mfrac>
+      </mrow>
+     </mrow>
+    </msqrt>
+   </mrow>
+  </mrow>
+  <annotation encoding="StarMath 5.0">n( %lambda ) = sqrt{ c_1 + 
+c_2 %lambda^2 + 
+{c_3} over {%lambda^2} + 
+{c_4} over {%lambda^4} +
+{c_4} over {%lambda^6} + 
+{c_5} over {%lambda^8} 
+}</annotation>
+ </semantics>
+</math>

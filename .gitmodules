@@ -1,3 +1,6 @@
 [submodule "orion"]
 	path = orion
 	url = https://github.com/orion-project/orion-qt
+[submodule "ext/qwt-mml-dev"]
+	path = ext/qwt-mml-dev
+	url = https://github.com/orion-project/qwt-mml-dev

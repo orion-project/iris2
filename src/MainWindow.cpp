@@ -22,6 +22,7 @@
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QStyle>
+#include <QTimer>
 
 MainWindow::MainWindow() : QMainWindow()
 {
@@ -49,9 +50,9 @@ MainWindow::MainWindow() : QMainWindow()
 
 MainWindow::~MainWindow()
 {
-    if (_catalog) delete _catalog;
-
     saveSettings();
+
+    if (_catalog) delete _catalog;
 }
 
 void MainWindow::createMenu()
@@ -102,6 +103,8 @@ void MainWindow::saveSettings()
     s.storeWindowGeometry(this);
     s.storeDockState(this);
     s.setValue("style", qApp->style()->objectName());
+    if (_catalog)
+        s.setValue("database", _catalog->fileName());
 }
 
 void MainWindow::loadSettings()
@@ -111,6 +114,9 @@ void MainWindow::loadSettings()
     s.restoreDockState(this);
     _mruList->load(s.settings());
     qApp->setStyle(s.strValue("style"));
+    auto lastFile = s.value("database").toString();
+    if (!lastFile.isEmpty())
+        QTimer::singleShot(200, [this, lastFile](){ this->openCatalog(lastFile); });
 }
 
 void MainWindow::newCatalog()

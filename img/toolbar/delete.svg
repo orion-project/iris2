@@ -1,0 +1,12 @@
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.0" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs>
+  <linearGradient id="a" y2="8" gradientUnits="userSpaceOnUse" x2="20" gradientTransform="matrix(1.2817 0 0 1.2817 -5.9437 -5.9437)" y1="19" x1="8">
+   <stop stop-color="#cd3232" offset="0"/>
+   <stop stop-color="#e08e8e" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g stroke-linejoin="round" transform="matrix(21.271 0 0 21.271 .74898 0.749)">
+  <path d="m15.845 12 7.69-7.6901-3.845-3.8451-7.69 7.6901-7.6901-7.6901-3.8451 3.8451 7.6901 7.6901-7.6901 7.69 3.8451 3.845 7.6901-7.69l7.6901 7.6901 3.8451-3.8451-7.6901-7.6901z" fill-rule="evenodd" stroke="#661b1b" stroke-width="1px" fill="url(#a)"/>
+  <path d="m3.0282 19.69 6.4085-6.4085c1.2817-1.2817 0-2.5634 0-2.5634l-6.4085-6.4091" stroke="#edbaba" stroke-linecap="round" stroke-width="1.5" fill="none"/>
+ </g>
+</svg>

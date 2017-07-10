@@ -11,6 +11,9 @@
         <file alias="comment">./img/icon/sticky_note.svg</file>
         <file alias="plot">./img/icon/dispersion_plot.svg</file>
     </qresource>
+    <qresource prefix="/toolbar">
+        <file alias="delete">./img/toolbar/delete.svg</file>
+    </qresource>
 </RCC>
 
 

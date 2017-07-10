@@ -39,7 +39,8 @@ SOURCES += src/main.cpp\
     src/GlassEditor.cpp \
     src/CatalogStore.cpp \
     src/SqlHelper.cpp \
-    src/DispersionPlot.cpp
+    src/DispersionPlot.cpp \
+    src/GlassListWidget.cpp
 
 HEADERS  += src/MainWindow.h \
     src/CatalogWidget.h \
@@ -50,4 +51,5 @@ HEADERS  += src/MainWindow.h \
     src/CatalogModel.h \
     src/CatalogStore.h \
     src/SqlHelper.h \
-    src/DispersionPlot.h
+    src/DispersionPlot.h \
+    src/GlassListWidget.h

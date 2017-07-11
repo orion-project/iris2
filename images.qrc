@@ -9,6 +9,9 @@
         <file alias="folder_closed">./img/icon/folder_closed.svg</file>
         <file alias="comment">./img/icon/sticky_note.svg</file>
     </qresource>
+    <qresource prefix="/formula">
+        <file alias="shott">./img/formula/shott.mml</file>
+    </qresource>
 </RCC>
 
 

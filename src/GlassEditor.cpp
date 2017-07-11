@@ -5,10 +5,12 @@
 #include "helpers/OriDialogs.h"
 #include "helpers/OriLayouts.h"
 #include "widgets/OriValueEdit.h"
+#include "qwt-mml-dev/formulaview.h"
 
 #include <QApplication>
 #include <QComboBox>
 #include <QDebug>
+#include <QFile>
 #include <QFormLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -35,7 +37,7 @@ GlassEditor::GlassEditor(DialogMode mode, Catalog *catalog) :
     setWindowIcon(QIcon(":/icon/main"));
     setObjectName("GlassEditor");
 
-    createPages({createGeneralPage(), createCommentPage()});
+    createPages({createGeneralPage(), createFormulaPage(), createCommentPage()});
 }
 
 QWidget* GlassEditor::createGeneralPage()
@@ -63,6 +65,24 @@ QWidget* GlassEditor::createGeneralPage()
     _titleEditor->setFocus();
 
     page->add({layout});
+    return page;
+}
+
+QWidget* GlassEditor::createFormulaPage()
+{
+    auto page = new Ori::Dlg::BasicConfigPage(tr("Formula"));
+
+    _formulaView = new FormulaView();
+
+    // TODO load glass specific formula
+    QFile file(":/formula/shott");
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        _formulaView->setFormula(file.readAll());
+        file.close();
+    }
+
+    page->add({_formulaView});
     return page;
 }
 

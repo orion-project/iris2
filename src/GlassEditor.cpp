@@ -70,7 +70,7 @@ QWidget* GlassEditor::createGeneralPage()
 
 QWidget* GlassEditor::createFormulaPage()
 {
-    auto page = new Ori::Dlg::BasicConfigPage(tr("Formula"));
+    auto page = new Ori::Dlg::BasicConfigPage(tr("Formula"), ":/icon/formula");
 
     _formulaView = new FormulaView();
 

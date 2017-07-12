@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+ <semantics>
+  <mrow>
+   <mi>n</mi>
+   <mrow>
+    <mrow>
+     <mo fence="true" stretchy="false">(</mo>
+     <mrow>
+      <mi mathvariant="normal">λ</mi>
+     </mrow>
+     <mo fence="true" stretchy="false">)</mo>
+    </mrow>
+    <mo stretchy="false">=</mo>
+    <msqrt>
+     <mrow>
+      <mn>1</mn>
+      <mo stretchy="false">+</mo>
+      <mfrac>
+       <mrow>
+        <msub>
+         <mi>b</mi>
+         <mn>1</mn>
+        </msub>
+        <msup>
+         <mi mathvariant="normal">λ</mi>
+         <mn>2</mn>
+        </msup>
+       </mrow>
+       <mrow>
+        <msup>
+         <mi mathvariant="normal">λ</mi>
+         <mn>2</mn>
+        </msup>
+        <mo stretchy="false">−</mo>
+        <msub>
+         <mi>c</mi>
+         <mn>1</mn>
+        </msub>
+       </mrow>
+      </mfrac>
+      <mo stretchy="false">+</mo>
+      <mfrac>
+       <mrow>
+        <msub>
+         <mi>b</mi>
+         <mn>2</mn>
+        </msub>
+        <msup>
+         <mi mathvariant="normal">λ</mi>
+         <mn>2</mn>
+        </msup>
+       </mrow>
+       <mrow>
+        <msup>
+         <mi mathvariant="normal">λ</mi>
+         <mn>2</mn>
+        </msup>
+        <mo stretchy="false">−</mo>
+        <msub>
+         <mi>c</mi>
+         <mn>2</mn>
+        </msub>
+       </mrow>
+      </mfrac>
+      <mo stretchy="false">+</mo>
+      <mfrac>
+       <mrow>
+        <msub>
+         <mi>b</mi>
+         <mn>3</mn>
+        </msub>
+        <msup>
+         <mi mathvariant="normal">λ</mi>
+         <mn>2</mn>
+        </msup>
+       </mrow>
+       <mrow>
+        <msup>
+         <mi mathvariant="normal">λ</mi>
+         <mn>2</mn>
+        </msup>
+        <mo stretchy="false">−</mo>
+        <msub>
+         <mi>c</mi>
+         <mn>3</mn>
+        </msub>
+       </mrow>
+      </mfrac>
+     </mrow>
+    </msqrt>
+   </mrow>
+  </mrow>
+  <annotation encoding="StarMath 5.0">n( %lambda ) = sqrt { 1 + 
+{b_1 %lambda^2} over {%lambda^2 - c_1} +
+{b_2 %lambda^2} over {%lambda^2 - c_2} +
+{b_3 %lambda^2} over {%lambda^2 - c_3} 
+}</annotation>
+ </semantics>
+</math>

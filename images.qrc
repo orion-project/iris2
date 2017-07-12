@@ -11,7 +11,9 @@
         <file alias="formula">./img/icon/formula.svg</file>
     </qresource>
     <qresource prefix="/formula">
-        <file alias="shott">./img/formula/shott.mml</file>
+        <file alias="Shott">./img/formula/shott.mml</file>
+        <file alias="Sellmeier">./img/formula/sellmeier.mml</file>
+        <file alias="Reznik">./img/formula/reznik.mml</file>
     </qresource>
 </RCC>
 

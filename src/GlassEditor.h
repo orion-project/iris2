@@ -29,6 +29,9 @@ public:
     static bool createGlass(Catalog *catalog, FolderItem* parent);
     static bool editGlass(Catalog *catalog, GlassItem* item);
 
+private slots:
+    void formulaSelected();
+
 private:
     enum DialogMode { CreateGlass, EditGlass };
 

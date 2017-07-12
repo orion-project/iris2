@@ -10,7 +10,6 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QDebug>
-#include <QFile>
 #include <QFormLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -43,12 +42,15 @@ GlassEditor::GlassEditor(DialogMode mode, Catalog *catalog) :
 QWidget* GlassEditor::createGeneralPage()
 {
     auto page = new Ori::Dlg::BasicConfigPage(tr("General"), ":/icon/glass_blue");
+    page->setLongTitle(tr("General Properties"));
 
     _titleEditor = new QLineEdit;
 
     _formulaSelector = new QComboBox;
     for (DispersionFormula* formula: dispersionFormulas().values())
         _formulaSelector->addItem(formula->icon(), tr(formula->name()), QString(formula->name()));
+    connect(_formulaSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(formulaSelected()));
+
     _lambdaMinEditor = new Ori::Widgets::ValueEdit;
     _lambdaMaxEditor = new Ori::Widgets::ValueEdit;
 
@@ -71,16 +73,14 @@ QWidget* GlassEditor::createGeneralPage()
 QWidget* GlassEditor::createFormulaPage()
 {
     auto page = new Ori::Dlg::BasicConfigPage(tr("Formula"), ":/icon/formula");
+    page->setLongTitle(tr("Dispersion Formula"));
 
     _formulaView = new FormulaView();
-
-    // TODO load glass specific formula
-    QFile file(":/formula/shott");
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        _formulaView->setFormula(file.readAll());
-        file.close();
-    }
+    _formulaView->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    _formulaView->setFontSize(72);
+    _formulaView->setPaddings(6);
+    _formulaView->setTransformation(true);
+    _formulaView->setScale(true);
 
     page->add({_formulaView});
     return page;
@@ -165,3 +165,8 @@ QString GlassEditor::glassComment() const  { return _commentEditor->toPlainText(
 double GlassEditor::lambdaMin() const { return _lambdaMinEditor->value(); }
 double GlassEditor::lambdaMax() const { return _lambdaMaxEditor->value(); }
 DispersionFormula* GlassEditor::formula() const { return dispersionFormulas()[_formulaSelector->currentData().toString()]; }
+
+void GlassEditor::formulaSelected()
+{
+    _formulaView->loadFormula(QString(":/formula/%1").arg(formula()->name()));
+}

@@ -36,7 +36,7 @@ GlassEditor::GlassEditor(DialogMode mode, Catalog *catalog) :
     setWindowIcon(QIcon(":/icon/main"));
     setObjectName("GlassEditor");
 
-    createPages({createGeneralPage(), createFormulaPage(), createCommentPage()});
+    createPages({createGeneralPage(), createFormulaPage(), createCoeffsPage(), createCommentPage()});
 }
 
 QWidget* GlassEditor::createGeneralPage()
@@ -83,6 +83,17 @@ QWidget* GlassEditor::createFormulaPage()
     _formulaView->setScale(true);
 
     page->add({_formulaView});
+    return page;
+}
+
+QWidget* GlassEditor::createCoeffsPage()
+{
+    auto page = new Ori::Dlg::BasicConfigPage(tr("Coefficients"));
+    page->setLongTitle(tr("Formula Coefficients"));
+
+    _coeffsLayout = new QFormLayout;
+
+    page->add({_coeffsLayout});
     return page;
 }
 
@@ -169,4 +180,23 @@ DispersionFormula* GlassEditor::formula() const { return dispersionFormulas()[_f
 void GlassEditor::formulaSelected()
 {
     _formulaView->loadFormula(QString(":/formula/%1").arg(formula()->name()));
+    updateCoeffEditors();
+}
+
+void GlassEditor::updateCoeffEditors()
+{
+    // TODO save old values
+    for (auto label : _coeffLabels.values()) delete label;
+    for (auto editor : _coeffEditors.values()) delete editor;
+    QStringList coeffs = formula()->coeffNames();
+    for (const QString& name : coeffs)
+    {
+        auto label = new QLabel(name);
+        auto editor = new Ori::Widgets::ValueEdit;
+        Ori::Gui::adjustFont(editor);
+        _coeffsLayout->addRow(label, editor);
+        _coeffEditors.insert(name, editor);
+        _coeffLabels.insert(name, label);
+    }
+    // TODO restore values
 }

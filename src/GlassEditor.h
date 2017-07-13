@@ -3,8 +3,12 @@
 
 #include "dialogs/OriBasicConfigDlg.h"
 
+#include <QMap>
+
 QT_BEGIN_NAMESPACE
 class QComboBox;
+class QFormLayout;
+class QLabel;
 class QLineEdit;
 class QTextEdit;
 QT_END_NAMESPACE
@@ -42,6 +46,9 @@ private:
     Ori::Widgets::ValueEdit *_lambdaMinEditor, *_lambdaMaxEditor;
     QTextEdit* _commentEditor;
     FormulaView* _formulaView;
+    QFormLayout* _coeffsLayout;
+    QMap<QString, Ori::Widgets::ValueEdit*> _coeffEditors;
+    QMap<QString, QLabel*> _coeffLabels;
 
     DialogMode _mode;
     Catalog *_catalog;
@@ -59,7 +66,10 @@ private:
 
     QWidget* createGeneralPage();
     QWidget* createFormulaPage();
+    QWidget* createCoeffsPage();
     QWidget* createCommentPage();
+
+    void updateCoeffEditors();
 };
 
 #endif // GLASSEDITOR_H

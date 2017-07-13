@@ -18,6 +18,7 @@ class DispersionFormula
 public:
     virtual const char* name() const = 0;
     virtual const QIcon& icon() const = 0;
+    virtual QStringList coeffNames() const { return QStringList(); }
     virtual Glass* makeGlass() = 0;
 };
 
@@ -26,6 +27,8 @@ class ShottFormula : public DispersionFormula
 public:
     const char* name() const { return QT_TRANSLATE_NOOP("Formula", "Shott"); }
     const QIcon& icon() const { static QIcon icon(":/icon/glass_green"); return icon; }
+    QStringList coeffNames() const { static QStringList c(
+        {"c_1", "c_2", "c_3", "c_4", "c_5"}); return c; }
     Glass* makeGlass();
 };
 
@@ -34,6 +37,8 @@ class SellmeierFormula : public DispersionFormula
 public:
     const char* name() const { return QT_TRANSLATE_NOOP("Formula", "Sellmeier"); }
     const QIcon& icon() const { static QIcon icon(":/icon/glass_red"); return icon; }
+    QStringList coeffNames() const { static QStringList c(
+        {"b_1", "b_2", "b_3", "c_1", "c_2", "c_3"}); return c; }
     Glass* makeGlass();
 };
 
@@ -42,6 +47,8 @@ class ReznikFormula : public DispersionFormula
 public:
     const char* name() const { return QT_TRANSLATE_NOOP("Formula", "Reznik"); }
     const QIcon& icon() const { static QIcon icon(":/icon/glass_violet"); return icon; }
+    QStringList coeffNames() const { static QStringList c(
+        {"c_1", "c_2", "c_3", "c_4", "c_5", "c_6", "c_7", "c_8", "c_9", "c_10", "c_11"}); return c; }
     Glass* makeGlass();
 };
 

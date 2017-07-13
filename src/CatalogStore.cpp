@@ -50,21 +50,22 @@ public:
     const QString formula = "Formula";
     const QString lambdaMin = "LambdaMin";
     const QString lambdaMax = "LambdaMax";
+    const QString coeffs = "Coeffs";
 
     QString sqlCreate() const override {
         return "CREATE TABLE IF NOT EXISTS Glass ("
                "Id INTEGER PRIMARY KEY, "
                "Parent REFERENCES Folder(Id) ON DELETE CASCADE, "
-               "Title, Info, Comment, Formula, LambdaMin, LambdaMax)";
+               "Title, Info, Comment, Formula, LambdaMin, LambdaMax, Coeffs)";
     }
 
     const QString sqlInsert =
-        "INSERT INTO Glass (Id, Parent, Title, Info, Comment, Formula, LambdaMin, LambdaMax) "
-        "VALUES (:Id, :Parent, :Title, :Info, :Comment, :Formula, :LambdaMin, :LambdaMax)";
+        "INSERT INTO Glass (Id, Parent, Title, Info, Comment, Formula, LambdaMin, LambdaMax, Coeffs) "
+        "VALUES (:Id, :Parent, :Title, :Info, :Comment, :Formula, :LambdaMin, :LambdaMax, :Coeffs)";
 
     const QString sqlUpdate =
         "UPDATE Glass SET Title = :Title, Info = :Info, Comment = :Comment, "
-            "Formula = :Formula, LambdaMin = :LambdaMin, LambdaMax = :LambdaMax "
+            "Formula = :Formula, LambdaMin = :LambdaMin, LambdaMax = :LambdaMax, Coeffs = :Coeffs "
         "WHERE Id = :Id";
 
     const QString sqlDelete = "DELETE FROM Glass WHERE Id = :Id";
@@ -171,6 +172,30 @@ QString FolderManager::removeBranch(FolderItem* folder, const QString& path) con
 
 //------------------------------------------------------------------------------
 
+QString serializeCoeffs(const QMap<QString, double>& coeffs)
+{
+    QStringList strs;
+    for (const QString& name : coeffs.keys())
+        strs.append(QString("%1=%2").arg(name).arg(coeffs[name], 0, 'g', 16));
+    return strs.join(';');
+}
+
+QMap<QString, double> deserialzeCoeffs(const QString& str)
+{
+    QMap<QString, double> coeffs;
+    for (const QString& part : str.split(';', QString::SkipEmptyParts))
+    {
+        int index = part.indexOf('=');
+        if (index < 1) continue;
+        bool ok;
+        double value = QStringRef(&part, index+1, part.length()-index-1).toDouble(&ok);
+        if (!ok) continue;
+        coeffs[part.left(index)] = value;
+    }
+    return coeffs;
+}
+
+
 GlassTableDef* GlassManager::table() const { static GlassTableDef t; return &t; }
 
 QString GlassManager::create(GlassItem* item) const
@@ -193,6 +218,7 @@ QString GlassManager::create(GlassItem* item) const
             .param(table()->lambdaMin, item->glass()->lambdaMin())
             .param(table()->lambdaMax, item->glass()->lambdaMax())
             .param(table()->formula, item->glass()->formula()->name())
+            .param(table()->coeffs, serializeCoeffs(item->glass()->coeffValues()))
             .exec();
     if (!res.isEmpty())
         return qApp->tr("Failed to create new material.\n\n%1").arg(res);
@@ -255,7 +281,7 @@ QString GlassManager::load(Glass* glass) const
     glass->_comment = r.value(table()->comment).toString();
     glass->_lambdaMin = r.value(table()->lambdaMin).toDouble();
     glass->_lambdaMax = r.value(table()->lambdaMax).toDouble();
-    // TODO load formula specific values
+    glass->_coeffValues = deserialzeCoeffs(r.value(table()->coeffs).toString());
     return QString();
 }
 
@@ -269,8 +295,8 @@ QString GlassManager::update(Glass* glass, const QString &info) const
             .param(table()->lambdaMin, glass->lambdaMin())
             .param(table()->lambdaMax, glass->lambdaMax())
             .param(table()->formula, glass->formula()->name())
+            .param(table()->coeffs, serializeCoeffs(glass->coeffValues()))
             .exec();
-    // TODO save formula specific values
 }
 
 QString GlassManager::remove(GlassItem* item) const

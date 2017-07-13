@@ -55,6 +55,11 @@ MainWindow::~MainWindow()
     if (_catalog) delete _catalog;
 }
 
+void toggleWidget(QWidget* panel)
+{
+    if (panel->isVisible()) panel->hide(); else panel->show();
+}
+
 void MainWindow::createMenu()
 {
     QMenu* menuFile = menuBar()->addMenu(tr("&File"));
@@ -65,6 +70,15 @@ void MainWindow::createMenu()
     new Ori::Widgets::MruMenuPart(_mruList, menuFile, actionExit, this);
 
     QMenu* menuView = menuBar()->addMenu(tr("&View"));
+    connect(menuView, &QMenu::aboutToShow, [this](){
+        this->_actionViewCatalog->setChecked(this->_dockCatalog->isVisible());
+        this->_actionViewInfo->setChecked(this->_dockInfo->isVisible());
+    });
+    _actionViewCatalog = menuView->addAction(tr("Catalog Panel"), [this](){ toggleWidget(this->_dockCatalog); });
+    _actionViewInfo = menuView->addAction(tr("Info Panel"), [this](){ toggleWidget(this->_dockInfo); });
+    _actionViewCatalog->setCheckable(true);
+    _actionViewInfo->setCheckable(true);
+    menuView->addSeparator();
     menuView->addMenu(new Ori::Widgets::StylesMenu(this));
 
     QMenu* menuMaterial = menuBar()->addMenu(tr("&Material"));
@@ -75,16 +89,16 @@ void MainWindow::createMenu()
 
 void MainWindow::createDocks()
 {
-    auto dockCatalog = new QDockWidget(tr("Catalog"));
-    dockCatalog->setObjectName("CatalogPanel");
-    dockCatalog->setWidget(_catalogView);
+    _dockCatalog = new QDockWidget(tr("Catalog"));
+    _dockCatalog->setObjectName("CatalogPanel");
+    _dockCatalog->setWidget(_catalogView);
 
-    auto dockInfo = new QDockWidget(tr("Info"));
-    dockInfo->setObjectName("InfoPanel");
-    dockInfo->setWidget(_infoView);
+    _dockInfo = new QDockWidget(tr("Info"));
+    _dockInfo->setObjectName("InfoPanel");
+    _dockInfo->setWidget(_infoView);
 
-    addDockWidget(Qt::LeftDockWidgetArea, dockCatalog);
-    addDockWidget(Qt::LeftDockWidgetArea, dockInfo);
+    addDockWidget(Qt::LeftDockWidgetArea, _dockCatalog);
+    addDockWidget(Qt::LeftDockWidgetArea, _dockInfo);
 }
 
 void MainWindow::createStatusBar()

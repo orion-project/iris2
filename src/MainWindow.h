@@ -5,6 +5,7 @@
 
 QT_BEGIN_NAMESPACE
 class QAction;
+class QDockWidget;
 class QLabel;
 class QMdiArea;
 QT_END_NAMESPACE
@@ -32,7 +33,9 @@ private:
     InfoWidget* _infoView;
     QMdiArea* _mdiArea;
     Ori::MruFileList *_mruList;
+    QDockWidget *_dockCatalog, *_dockInfo;
     QLabel *_statusGlassCount, *_statusFileName;
+    QAction *_actionViewCatalog, *_actionViewInfo;
     QAction *_actionMakeDispPlot, *_actionAddToActivePlot;
 
     void createMenu();

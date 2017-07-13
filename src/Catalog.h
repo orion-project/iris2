@@ -70,7 +70,7 @@ inline const QMap<QString, DispersionFormula*>& dispersionFormulas()
         { shott.name(), &shott },
         { sellmeier.name(), &sellmeier },
         { reznik.name(), &reznik },
-        { custom.name(), &custom }
+        //{ custom.name(), &custom }
     };
     return formulas;
 }

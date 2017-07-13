@@ -49,6 +49,7 @@ private:
     QFormLayout* _coeffsLayout;
     QMap<QString, Ori::Widgets::ValueEdit*> _coeffEditors;
     QMap<QString, QLabel*> _coeffLabels;
+    QMap<QString, double> _coeffsBackup;
 
     DialogMode _mode;
     Catalog *_catalog;

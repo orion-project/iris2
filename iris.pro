@@ -54,4 +54,5 @@ HEADERS  += src/MainWindow.h \
     src/CatalogStore.h \
     src/SqlHelper.h \
     src/DispersionPlot.h \
-    src/GlassListWidget.h
+    src/GlassListWidget.h \
+    src/Appearance.h

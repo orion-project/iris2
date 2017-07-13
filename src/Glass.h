@@ -2,6 +2,7 @@
 #define GLASS_H
 
 #include <QString>
+#include <QMap>
 
 class DispersionFormula;
 
@@ -14,6 +15,7 @@ public:
     double lambdaMin() const { return _lambdaMin; }
     double lambdaMax() const { return _lambdaMax; }
     DispersionFormula* formula() const { return _formula; }
+    const QMap<QString, double>& coeffValues() const { return _coeffValues; }
 
 //    virtual double calcIndex(const double& lambda) const = 0;
 //    virtual double calcIndex1(const double& lambda) const = 0;
@@ -30,6 +32,7 @@ protected:
 private:
     int _id;
     QString _title, _comment;
+    QMap<QString, double> _coeffValues;
 
     friend class Catalog;
     friend class GlassEditor;

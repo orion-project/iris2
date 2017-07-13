@@ -1,7 +1,7 @@
+#include "Appearance.h"
 #include "Catalog.h"
 #include "Glass.h"
 #include "GlassEditor.h"
-#include "helpers/OriWidgets.h"
 #include "helpers/OriDialogs.h"
 #include "helpers/OriLayouts.h"
 #include "widgets/OriValueEdit.h"
@@ -11,7 +11,6 @@
 #include <QComboBox>
 #include <QDebug>
 #include <QFormLayout>
-#include <QLabel>
 #include <QLineEdit>
 #include <QTextEdit>
 
@@ -45,28 +44,23 @@ QWidget* GlassEditor::createGeneralPage()
     page->setLongTitle(tr("General Properties"));
 
     _titleEditor = new QLineEdit;
-
-    _formulaSelector = new QComboBox;
-    for (DispersionFormula* formula: dispersionFormulas().values())
-        _formulaSelector->addItem(formula->icon(), tr(formula->name()), QString(formula->name()));
-    connect(_formulaSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(formulaSelected()));
-
     _lambdaMinEditor = new Ori::Widgets::ValueEdit;
     _lambdaMaxEditor = new Ori::Widgets::ValueEdit;
 
+    Z::Gui::setValueFont(_titleEditor);
+    Z::Gui::setValueFont(_lambdaMinEditor);
+    Z::Gui::setValueFont(_lambdaMaxEditor);
+
     auto layout = new QFormLayout;
     layout->addRow(new QLabel(tr("Material name")), _titleEditor);
-    layout->addRow(new QLabel(tr("Dispersion formula")), _formulaSelector);
     layout->addRow(new QLabel(tr("Min wavelength, <b>μm</b>")), _lambdaMinEditor);
     layout->addRow(new QLabel(tr("Max wavelength, <b>μm</b>")), _lambdaMaxEditor);
 
-    Ori::Gui::adjustFont(_titleEditor);
-    Ori::Gui::adjustFont(_lambdaMinEditor);
-    Ori::Gui::adjustFont(_lambdaMaxEditor);
+    auto frame = new QFrame;
+    frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    frame->setLayout(layout);
 
-    _titleEditor->setFocus();
-
-    page->add({layout});
+    page->add({frame});
     return page;
 }
 
@@ -75,6 +69,11 @@ QWidget* GlassEditor::createFormulaPage()
     auto page = new Ori::Dlg::BasicConfigPage(tr("Formula"), ":/icon/formula");
     page->setLongTitle(tr("Dispersion Formula"));
 
+    _formulaSelector = new QComboBox;
+    for (DispersionFormula* formula: dispersionFormulas().values())
+        _formulaSelector->addItem(formula->icon(), tr(formula->name()), QString(formula->name()));
+    connect(_formulaSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(formulaSelected()));
+
     _formulaView = new FormulaView();
     _formulaView->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     _formulaView->setFontSize(72);
@@ -82,18 +81,22 @@ QWidget* GlassEditor::createFormulaPage()
     _formulaView->setTransformation(true);
     _formulaView->setScale(true);
 
-    page->add({_formulaView});
+    page->add({_formulaSelector, _formulaView});
     return page;
 }
 
 QWidget* GlassEditor::createCoeffsPage()
 {
-    auto page = new Ori::Dlg::BasicConfigPage(tr("Coefficients"));
+    auto page = new Ori::Dlg::BasicConfigPage(tr("Coefficients"), ":/icon/coeffs");
     page->setLongTitle(tr("Formula Coefficients"));
 
     _coeffsLayout = new QFormLayout;
 
-    page->add({_coeffsLayout});
+    auto frame = new QFrame;
+    frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    frame->setLayout(_coeffsLayout);
+
+    page->add({frame});
     return page;
 }
 
@@ -103,9 +106,7 @@ QWidget* GlassEditor::createCommentPage()
 
     _commentEditor = new QTextEdit;
     _commentEditor->setAcceptRichText(false);
-    Ori::Gui::adjustFont(_commentEditor);
-
-    _commentEditor->setFocus();
+    Z::Gui::setValueFont(_commentEditor);
 
     page->add({_commentEditor});
     return page;
@@ -138,6 +139,10 @@ bool GlassEditor::populate(GlassItem* item)
             break;
         }
 
+    for (const QString& name : _glassItem->formula()->coeffNames())
+        if (_coeffEditors.contains(name))
+            _coeffEditors[name]->setValue(glass->coeffValues()[name]);
+
     return true;
 }
 
@@ -157,6 +162,9 @@ bool GlassEditor::collect()
     glass->_lambdaMin = lambdaMin();
     glass->_lambdaMax = lambdaMax();
     glass->_comment = glassComment();
+    glass->_coeffValues.clear();
+    for (const QString& name : _coeffEditors.keys())
+        glass->_coeffValues[name] = _coeffEditors[name]->value();
 
     auto res = _mode == CreateGlass
             ? _catalog->createGlass(_parentFolder, glass)
@@ -185,18 +193,25 @@ void GlassEditor::formulaSelected()
 
 void GlassEditor::updateCoeffEditors()
 {
-    // TODO save old values
-    for (auto label : _coeffLabels.values()) delete label;
-    for (auto editor : _coeffEditors.values()) delete editor;
+    for (const QString& name : _coeffEditors.keys())
+        _coeffsBackup[name] = _coeffEditors[name]->value();
+    qDeleteAll(_coeffLabels.values()); _coeffLabels.clear();
+    qDeleteAll(_coeffEditors.values()); _coeffEditors.clear();
     QStringList coeffs = formula()->coeffNames();
     for (const QString& name : coeffs)
     {
-        auto label = new QLabel(name);
+        int subIndex = name.indexOf('_');
+        QString labelName = subIndex > 0
+            ? QString("%1<sub>%2</sub> =").arg(name.left(subIndex))
+                .arg(name.right(name.length() - subIndex - 1))
+            : QString("%1 =").arg(name);
+        auto label = Z::Gui::makeSymbolLabel(labelName);
         auto editor = new Ori::Widgets::ValueEdit;
-        Ori::Gui::adjustFont(editor);
+        Z::Gui::setValueFont(editor);
         _coeffsLayout->addRow(label, editor);
         _coeffEditors.insert(name, editor);
         _coeffLabels.insert(name, label);
     }
-    // TODO restore values
+    for (const QString& name : coeffs)
+        _coeffEditors[name]->setValue(_coeffsBackup[name]);
 }

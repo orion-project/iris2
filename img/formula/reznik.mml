@@ -134,6 +134,14 @@
      <mtable>
       <mtr>
        <mtd>
+        <mrow/>
+       </mtd>
+       <mtd>
+        <mrow/>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd>
         <mrow>
          <mi mathvariant="normal">μ</mi>
          <mo stretchy="false">=</mo>
@@ -158,13 +166,9 @@
        </mtd>
        <mtd>
         <mrow>
-         <msub>
-          <mi>L</mi>
-          <mi mathvariant="normal">λ</mi>
-         </msub>
+         <mi mathvariant="normal">ν</mi>
          <mo stretchy="false">=</mo>
          <mfrac>
-          <mn>1</mn>
           <mrow>
            <msup>
             <mi mathvariant="normal">λ</mi>
@@ -172,13 +176,19 @@
            </msup>
            <mo stretchy="false">−</mo>
            <msub>
-            <mi>c</mi>
-            <mn>1</mn>
+            <mi mathvariant="normal">λ</mi>
+            <mi mathvariant="italic">av</mi>
            </msub>
+          </mrow>
+          <mrow>
+           <mi mathvariant="normal">Δ</mi>
+           <mi mathvariant="normal">λ</mi>
           </mrow>
          </mfrac>
         </mrow>
        </mtd>
+      </mtr>
+      <mtr>
        <mtd>
         <mrow>
          <msub>
@@ -202,8 +212,6 @@
          </mfrac>
         </mrow>
        </mtd>
-      </mtr>
-      <mtr>
        <mtd>
         <mrow>
          <mi mathvariant="normal">Δ</mi>
@@ -227,6 +235,8 @@
          </mrow>
         </mrow>
        </mtd>
+      </mtr>
+      <mtr>
        <mtd>
         <mrow>
          <msub>
@@ -279,29 +289,6 @@
       <mtr>
        <mtd>
         <mrow>
-         <mi mathvariant="normal">ν</mi>
-         <mo stretchy="false">=</mo>
-         <mfrac>
-          <mrow>
-           <msup>
-            <mi mathvariant="normal">λ</mi>
-            <mn>2</mn>
-           </msup>
-           <mo stretchy="false">−</mo>
-           <msub>
-            <mi mathvariant="normal">λ</mi>
-            <mi mathvariant="italic">av</mi>
-           </msub>
-          </mrow>
-          <mrow>
-           <mi mathvariant="normal">Δ</mi>
-           <mi mathvariant="normal">λ</mi>
-          </mrow>
-         </mfrac>
-        </mrow>
-       </mtd>
-       <mtd>
-        <mrow>
          <msub>
           <mi mathvariant="normal">λ</mi>
           <mi mathvariant="italic">av</mi>
@@ -351,6 +338,34 @@
         </mrow>
        </mtd>
       </mtr>
+      <mtr>
+       <mtd>
+        <mrow>
+         <msub>
+          <mi>L</mi>
+          <mi mathvariant="normal">λ</mi>
+         </msub>
+         <mo stretchy="false">=</mo>
+         <mfrac>
+          <mn>1</mn>
+          <mrow>
+           <msup>
+            <mi mathvariant="normal">λ</mi>
+            <mn>2</mn>
+           </msup>
+           <mo stretchy="false">−</mo>
+           <msub>
+            <mi>c</mi>
+            <mn>1</mn>
+           </msub>
+          </mrow>
+         </mfrac>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mrow/>
+       </mtd>
+      </mtr>
      </mtable>
     </mtd>
    </mtr>
@@ -360,15 +375,17 @@
 	{ + c_3 %mu + c_5 %mu^2 + c_7 %mu^3 + c_9  %mu^4 + c_11 %mu^5 }
 }{
   matrix{
+  	{ } # {  } ##
     %mu = { L_%lambda - L_av } over { %DELTA L } #  
-    L_%lambda = 1 over { %lambda^2 - c_1 }  # 
-    L_av = { L_max + L_min } over 2 ## 
-    %DELTA L = { L_min - L_max } over 2 # 
+    %nu = { %lambda^2 - %lambda_av } over { %DELTA %lambda } ##
+    L_av = { L_max + L_min } over 2 # 
+    %DELTA L = { L_min - L_max } over 2 ## 
     L_min = 1 over { %lambda_min^2 - c_1} # 
     L_max = 1 over { %lambda_max^2 - c_1} ##
-    %nu = { %lambda^2 - %lambda_av } over { %DELTA %lambda } #
     %lambda_av = { %lambda_max^2 + %lambda_min^2 } over 2 #
-    %DELTA %lambda = { %lambda_max^2 - %lambda_min^2 } over 2
+    %DELTA %lambda = { %lambda_max^2 - %lambda_min^2 } over 2 ##
+    L_%lambda = 1 over { %lambda^2 - c_1 } #
+    { } 
   } 
 } </annotation>
  </semantics>

@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+ <semantics>
+  <mtable>
+   <mtr>
+    <mtd>
+     <mtable>
+      <mtr>
+       <mtd>
+        <mrow>
+         <mi>n</mi>
+         <mrow>
+          <mrow>
+           <mo fence="true" stretchy="false">(</mo>
+           <mrow>
+            <mi mathvariant="normal">λ</mi>
+           </mrow>
+           <mo fence="true" stretchy="false">)</mo>
+          </mrow>
+          <mo stretchy="false">=</mo>
+          <mrow>
+           <msub>
+            <mi>c</mi>
+            <mn>2</mn>
+           </msub>
+           <mo stretchy="false">+</mo>
+           <msub>
+            <mi>c</mi>
+            <mn>4</mn>
+           </msub>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mi mathvariant="normal">ν</mi>
+          <mo stretchy="false">+</mo>
+          <msub>
+           <mi>c</mi>
+           <mn>6</mn>
+          </msub>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi mathvariant="normal">ν</mi>
+           <mn>2</mn>
+          </msup>
+          <mo stretchy="false">+</mo>
+          <msub>
+           <mi>c</mi>
+           <mn>8</mn>
+          </msub>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi mathvariant="normal">ν</mi>
+           <mn>3</mn>
+          </msup>
+          <mo stretchy="false">+</mo>
+          <msub>
+           <mi>c</mi>
+           <mn>10</mn>
+          </msub>
+         </mrow>
+         <msup>
+          <mi mathvariant="normal">ν</mi>
+          <mn>4</mn>
+         </msup>
+        </mrow>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd>
+        <mrow>
+         <mrow>
+          <mo stretchy="false">+</mo>
+          <msub>
+           <mi>c</mi>
+           <mn>3</mn>
+          </msub>
+         </mrow>
+         <mrow>
+          <mi mathvariant="normal">μ</mi>
+          <mo stretchy="false">+</mo>
+          <msub>
+           <mi>c</mi>
+           <mn>5</mn>
+          </msub>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi mathvariant="normal">μ</mi>
+           <mn>2</mn>
+          </msup>
+          <mo stretchy="false">+</mo>
+          <msub>
+           <mi>c</mi>
+           <mn>7</mn>
+          </msub>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi mathvariant="normal">μ</mi>
+           <mn>3</mn>
+          </msup>
+          <mo stretchy="false">+</mo>
+          <msub>
+           <mi>c</mi>
+           <mn>9</mn>
+          </msub>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi mathvariant="normal">μ</mi>
+           <mn>4</mn>
+          </msup>
+          <mo stretchy="false">+</mo>
+          <msub>
+           <mi>c</mi>
+           <mn>11</mn>
+          </msub>
+         </mrow>
+         <msup>
+          <mi mathvariant="normal">μ</mi>
+          <mn>5</mn>
+         </msup>
+        </mrow>
+       </mtd>
+      </mtr>
+     </mtable>
+    </mtd>
+   </mtr>
+   <mtr>
+    <mtd>
+     <mtable>
+      <mtr>
+       <mtd>
+        <mrow>
+         <mi mathvariant="normal">μ</mi>
+         <mo stretchy="false">=</mo>
+         <mfrac>
+          <mrow>
+           <msub>
+            <mi>L</mi>
+            <mi mathvariant="normal">λ</mi>
+           </msub>
+           <mo stretchy="false">−</mo>
+           <msub>
+            <mi>L</mi>
+            <mi mathvariant="italic">av</mi>
+           </msub>
+          </mrow>
+          <mrow>
+           <mi mathvariant="normal">Δ</mi>
+           <mi>L</mi>
+          </mrow>
+         </mfrac>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mrow>
+         <msub>
+          <mi>L</mi>
+          <mi mathvariant="normal">λ</mi>
+         </msub>
+         <mo stretchy="false">=</mo>
+         <mfrac>
+          <mn>1</mn>
+          <mrow>
+           <msup>
+            <mi mathvariant="normal">λ</mi>
+            <mn>2</mn>
+           </msup>
+           <mo stretchy="false">−</mo>
+           <msub>
+            <mi>c</mi>
+            <mn>1</mn>
+           </msub>
+          </mrow>
+         </mfrac>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mrow>
+         <msub>
+          <mi>L</mi>
+          <mi mathvariant="italic">av</mi>
+         </msub>
+         <mo stretchy="false">=</mo>
+         <mfrac>
+          <mrow>
+           <msub>
+            <mi>L</mi>
+            <mi mathvariant="italic">max</mi>
+           </msub>
+           <mo stretchy="false">+</mo>
+           <msub>
+            <mi>L</mi>
+            <mi mathvariant="italic">min</mi>
+           </msub>
+          </mrow>
+          <mn>2</mn>
+         </mfrac>
+        </mrow>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd>
+        <mrow>
+         <mi mathvariant="normal">Δ</mi>
+         <mrow>
+          <mi>L</mi>
+          <mo stretchy="false">=</mo>
+          <mfrac>
+           <mrow>
+            <msub>
+             <mi>L</mi>
+             <mi mathvariant="italic">min</mi>
+            </msub>
+            <mo stretchy="false">−</mo>
+            <msub>
+             <mi>L</mi>
+             <mi mathvariant="italic">max</mi>
+            </msub>
+           </mrow>
+           <mn>2</mn>
+          </mfrac>
+         </mrow>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mrow>
+         <msub>
+          <mi>L</mi>
+          <mi mathvariant="italic">min</mi>
+         </msub>
+         <mo stretchy="false">=</mo>
+         <mfrac>
+          <mn>1</mn>
+          <mrow>
+           <msubsup>
+            <mi mathvariant="normal">λ</mi>
+            <mi mathvariant="italic">min</mi>
+            <mn>2</mn>
+           </msubsup>
+           <mo stretchy="false">−</mo>
+           <msub>
+            <mi>c</mi>
+            <mn>1</mn>
+           </msub>
+          </mrow>
+         </mfrac>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mrow>
+         <msub>
+          <mi>L</mi>
+          <mi mathvariant="italic">max</mi>
+         </msub>
+         <mo stretchy="false">=</mo>
+         <mfrac>
+          <mn>1</mn>
+          <mrow>
+           <msubsup>
+            <mi mathvariant="normal">λ</mi>
+            <mi mathvariant="italic">max</mi>
+            <mn>2</mn>
+           </msubsup>
+           <mo stretchy="false">−</mo>
+           <msub>
+            <mi>c</mi>
+            <mn>1</mn>
+           </msub>
+          </mrow>
+         </mfrac>
+        </mrow>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd>
+        <mrow>
+         <mi mathvariant="normal">ν</mi>
+         <mo stretchy="false">=</mo>
+         <mfrac>
+          <mrow>
+           <msup>
+            <mi mathvariant="normal">λ</mi>
+            <mn>2</mn>
+           </msup>
+           <mo stretchy="false">−</mo>
+           <msub>
+            <mi mathvariant="normal">λ</mi>
+            <mi mathvariant="italic">av</mi>
+           </msub>
+          </mrow>
+          <mrow>
+           <mi mathvariant="normal">Δ</mi>
+           <mi mathvariant="normal">λ</mi>
+          </mrow>
+         </mfrac>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mrow>
+         <msub>
+          <mi mathvariant="normal">λ</mi>
+          <mi mathvariant="italic">av</mi>
+         </msub>
+         <mo stretchy="false">=</mo>
+         <mfrac>
+          <mrow>
+           <msubsup>
+            <mi mathvariant="normal">λ</mi>
+            <mi mathvariant="italic">max</mi>
+            <mn>2</mn>
+           </msubsup>
+           <mo stretchy="false">+</mo>
+           <msubsup>
+            <mi mathvariant="normal">λ</mi>
+            <mi mathvariant="italic">min</mi>
+            <mn>2</mn>
+           </msubsup>
+          </mrow>
+          <mn>2</mn>
+         </mfrac>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mrow>
+         <mi mathvariant="normal">Δ</mi>
+         <mrow>
+          <mi mathvariant="normal">λ</mi>
+          <mo stretchy="false">=</mo>
+          <mfrac>
+           <mrow>
+            <msubsup>
+             <mi mathvariant="normal">λ</mi>
+             <mi mathvariant="italic">max</mi>
+             <mn>2</mn>
+            </msubsup>
+            <mo stretchy="false">−</mo>
+            <msubsup>
+             <mi mathvariant="normal">λ</mi>
+             <mi mathvariant="italic">min</mi>
+             <mn>2</mn>
+            </msubsup>
+           </mrow>
+           <mn>2</mn>
+          </mfrac>
+         </mrow>
+        </mrow>
+       </mtd>
+      </mtr>
+     </mtable>
+    </mtd>
+   </mtr>
+  </mtable>
+  <annotation encoding="StarMath 5.0">binom {
+	binom{ n( %lambda ) = c_2 + c_4 %nu + c_6 %nu^2 + c_8 %nu^3 + c_10 %nu^4 }
+	{ + c_3 %mu + c_5 %mu^2 + c_7 %mu^3 + c_9  %mu^4 + c_11 %mu^5 }
+}{
+  matrix{
+    %mu = { L_%lambda - L_av } over { %DELTA L } #  
+    L_%lambda = 1 over { %lambda^2 - c_1 }  # 
+    L_av = { L_max + L_min } over 2 ## 
+    %DELTA L = { L_min - L_max } over 2 # 
+    L_min = 1 over { %lambda_min^2 - c_1} # 
+    L_max = 1 over { %lambda_max^2 - c_1} ##
+    %nu = { %lambda^2 - %lambda_av } over { %DELTA %lambda } #
+    %lambda_av = { %lambda_max^2 + %lambda_min^2 } over 2 #
+    %DELTA %lambda = { %lambda_max^2 - %lambda_min^2 } over 2
+  } 
+} </annotation>
+ </semantics>
+</math>

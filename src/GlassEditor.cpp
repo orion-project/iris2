@@ -5,6 +5,7 @@
 #include "helpers/OriDialogs.h"
 #include "helpers/OriLayouts.h"
 #include "widgets/OriValueEdit.h"
+#include "qwt-mml-dev/formulaview.h"
 
 #include <QApplication>
 #include <QComboBox>
@@ -35,18 +36,21 @@ GlassEditor::GlassEditor(DialogMode mode, Catalog *catalog) :
     setWindowIcon(QIcon(":/icon/main"));
     setObjectName("GlassEditor");
 
-    createPages({createGeneralPage(), createCommentPage()});
+    createPages({createGeneralPage(), createFormulaPage(), createCommentPage()});
 }
 
 QWidget* GlassEditor::createGeneralPage()
 {
     auto page = new Ori::Dlg::BasicConfigPage(tr("General"), ":/icon/glass_blue");
+    page->setLongTitle(tr("General Properties"));
 
     _titleEditor = new QLineEdit;
 
     _formulaSelector = new QComboBox;
     for (DispersionFormula* formula: dispersionFormulas().values())
         _formulaSelector->addItem(formula->icon(), tr(formula->name()), QString(formula->name()));
+    connect(_formulaSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(formulaSelected()));
+
     _lambdaMinEditor = new Ori::Widgets::ValueEdit;
     _lambdaMaxEditor = new Ori::Widgets::ValueEdit;
 
@@ -63,6 +67,22 @@ QWidget* GlassEditor::createGeneralPage()
     _titleEditor->setFocus();
 
     page->add({layout});
+    return page;
+}
+
+QWidget* GlassEditor::createFormulaPage()
+{
+    auto page = new Ori::Dlg::BasicConfigPage(tr("Formula"), ":/icon/formula");
+    page->setLongTitle(tr("Dispersion Formula"));
+
+    _formulaView = new FormulaView();
+    _formulaView->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    _formulaView->setFontSize(72);
+    _formulaView->setPaddings(6);
+    _formulaView->setTransformation(true);
+    _formulaView->setScale(true);
+
+    page->add({_formulaView});
     return page;
 }
 
@@ -145,3 +165,8 @@ QString GlassEditor::glassComment() const  { return _commentEditor->toPlainText(
 double GlassEditor::lambdaMin() const { return _lambdaMinEditor->value(); }
 double GlassEditor::lambdaMax() const { return _lambdaMaxEditor->value(); }
 DispersionFormula* GlassEditor::formula() const { return dispersionFormulas()[_formulaSelector->currentData().toString()]; }
+
+void GlassEditor::formulaSelected()
+{
+    _formulaView->loadFormula(QString(":/formula/%1").arg(formula()->name()));
+}

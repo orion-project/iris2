@@ -14,6 +14,8 @@ class GlassItem;
 class FolderItem;
 class DispersionFormula;
 
+class FormulaView;
+
 namespace Ori {
 namespace Widgets {
 class ValueEdit;
@@ -27,6 +29,9 @@ public:
     static bool createGlass(Catalog *catalog, FolderItem* parent);
     static bool editGlass(Catalog *catalog, GlassItem* item);
 
+private slots:
+    void formulaSelected();
+
 private:
     enum DialogMode { CreateGlass, EditGlass };
 
@@ -36,6 +41,7 @@ private:
     QComboBox *_formulaSelector;
     Ori::Widgets::ValueEdit *_lambdaMinEditor, *_lambdaMaxEditor;
     QTextEdit* _commentEditor;
+    FormulaView* _formulaView;
 
     DialogMode _mode;
     Catalog *_catalog;
@@ -52,6 +58,7 @@ private:
     double lambdaMax() const;
 
     QWidget* createGeneralPage();
+    QWidget* createFormulaPage();
     QWidget* createCommentPage();
 };
 

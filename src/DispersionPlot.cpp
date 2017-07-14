@@ -1,6 +1,9 @@
+#include "Appearance.h"
 #include "Catalog.h"
+#include "Glass.h"
 #include "GlassListWidget.h"
 #include "DispersionPlot.h"
+#include "helpers/OriWidgets.h"
 #include "helpers/OriLayouts.h"
 #include "helpers/OriDialogs.h"
 
@@ -12,6 +15,30 @@
 
 using namespace Ori::Layouts;
 
+int getPlotPointsCount() { return 100; } // TODO make configurable
+
+//------------------------------------------------------------------------------
+
+void GlassPlot::calc()
+{
+    QStringList report;
+    double lambdaMin = _glass->lambdaMin();
+    double lambdaMax = _glass->lambdaMax();
+    if (lambdaMax < lambdaMin) std::swap(lambdaMax, lambdaMin);
+    int pointCount = getPlotPointsCount();
+    double lambdaStep = (lambdaMax - lambdaMin) / double(pointCount-1);
+    double lambda = lambdaMin;
+    for (int i = 0; i < pointCount; i++)
+    {
+        double value = _glass->calcIndex(lambda);
+        report.append(QString("%1\t%2\t%3").arg(i).arg(lambda).arg(value));
+        lambda += lambdaStep;
+    }
+    result = report.join('\n');
+}
+
+//------------------------------------------------------------------------------
+
 DispersionPlot::DispersionPlot(Catalog* catalog) : QWidget(), _catalog(catalog)
 {
     setWindowIcon(QIcon(":/icon/plot"));
@@ -21,9 +48,10 @@ DispersionPlot::DispersionPlot(Catalog* catalog) : QWidget(), _catalog(catalog)
     _itemsView = new GlassListWidget(&_items);
 
     _plotView = new QTextBrowser;
+    Ori::Gui::setFontMonospace(_plotView);
 
     auto paramsPanel = LayoutV({
-                                   makeHeaderLabel(tr("Materials")),
+                                   Z::Gui::makeHeaderLabel(tr("Materials")),
                                    _itemsView,
                                    Stretch()
                                })
@@ -40,6 +68,7 @@ DispersionPlot::DispersionPlot(Catalog* catalog) : QWidget(), _catalog(catalog)
 
 DispersionPlot::~DispersionPlot()
 {
+    qDeleteAll(_plots.values());
 }
 
 void DispersionPlot::addGlass(GlassItem* item)
@@ -52,7 +81,15 @@ void DispersionPlot::addGlass(GlassItem* item)
         if (!res.isEmpty()) return Ori::Dlg::error(res);
     }
 
+    auto res = item->glass()->prepare();
+    if (!res.isEmpty()) return Ori::Dlg::error(res);
+
+    auto plot = new GlassPlot(item->glass());
+    plot->calc(); // TODO actual plotting
+    _plotView->setPlainText(plot->result);
+
     _items.append(item);
+    _plots.insert(item, plot);
     _itemsView->populate();
 
     updatePlot();
@@ -75,18 +112,12 @@ QString DispersionPlot::makeWindowTitle() const
 void DispersionPlot::glassRemoved(GlassItem* item)
 {
     if (!_items.contains(item)) return;
+    delete _plots[item];
+    _plots.remove(item);
     _items.removeAll(item);
     _itemsView->populate();
     updatePlot();
 }
 
-QLabel* DispersionPlot::makeHeaderLabel(const QString& title) const
-{
-    QLabel* label = new QLabel(title);
-    auto font = label->font();
-    font.setBold(true);
-    font.setPointSize(font.pointSize()+1);
-    label->setFont(font);
-    return label;
-}
+
 

@@ -32,6 +32,16 @@ inline QLabel* makeSymbolLabel(const QString& text)
     return label;
 }
 
+inline QLabel* makeHeaderLabel(const QString& title)
+{
+    QLabel* label = new QLabel(title);
+    auto font = label->font();
+    font.setBold(true);
+    font.setPointSize(font.pointSize()+1);
+    label->setFont(font);
+    return label;
+}
+
 } // namespace Gui
 } // namespace Z
 

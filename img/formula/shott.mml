@@ -57,7 +57,7 @@
        <mfrac>
         <msub>
          <mi>c</mi>
-         <mn>4</mn>
+         <mn>5</mn>
         </msub>
         <msup>
          <mi mathvariant="normal">λ</mi>
@@ -68,7 +68,7 @@
        <mfrac>
         <msub>
          <mi>c</mi>
-         <mn>5</mn>
+         <mn>6</mn>
         </msub>
         <msup>
          <mi mathvariant="normal">λ</mi>
@@ -84,8 +84,8 @@
 c_2 %lambda^2 + 
 {c_3} over {%lambda^2} + 
 {c_4} over {%lambda^4} +
-{c_4} over {%lambda^6} + 
-{c_5} over {%lambda^8} 
+{c_5} over {%lambda^6} + 
+{c_6} over {%lambda^8} 
 }</annotation>
  </semantics>
 </math>

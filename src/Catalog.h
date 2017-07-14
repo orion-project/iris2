@@ -28,7 +28,7 @@ public:
     const char* name() const { return QT_TRANSLATE_NOOP("Formula", "Shott"); }
     const QIcon& icon() const { static QIcon icon(":/icon/glass_green"); return icon; }
     QStringList coeffNames() const { static QStringList c(
-        {"c_1", "c_2", "c_3", "c_4", "c_5"}); return c; }
+        {"c_1", "c_2", "c_3", "c_4", "c_5", "c_6"}); return c; }
     Glass* makeGlass();
 };
 

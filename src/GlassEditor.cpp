@@ -18,6 +18,7 @@ bool GlassEditor::createGlass(Catalog* catalog, FolderItem* parent)
 {
     GlassEditor editor(CreateGlass, catalog);
     editor._parentFolder = parent;
+    editor.formulaSelected();
     return editor.run();
 }
 
@@ -132,10 +133,12 @@ bool GlassEditor::populate(GlassItem* item)
     _commentEditor->setPlainText(glass->comment());
 
     QString formulaName(_glassItem->formula()->name());
+    int currentIndex = _formulaSelector->currentIndex();
     for (int i = 0; i < _formulaSelector->count(); i++)
         if (_formulaSelector->itemData(i).toString() == formulaName)
         {
-            _formulaSelector->setCurrentIndex(i);
+            if (i == currentIndex) formulaSelected();
+            else _formulaSelector->setCurrentIndex(i);
             break;
         }
 

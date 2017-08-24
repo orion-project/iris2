@@ -170,6 +170,7 @@ public:
     ~Catalog();
 
     static QString fileFilter();
+    static QString defaultFileExt();
     static CatalorResult open(const QString& fileName);
     static CatalorResult create(const QString& fileName);
 

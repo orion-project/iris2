@@ -30,6 +30,11 @@ QString Catalog::fileFilter()
     return tr("Iris Catalog Files (*.iris);;All files (*.*)");
 }
 
+QString Catalog::defaultFileExt()
+{
+    return QStringLiteral("iris");
+}
+
 CatalorResult Catalog::open(const QString& fileName)
 {
     QString res = CatalogStore::openDatabase(fileName);
